@@ -4,11 +4,11 @@ import { customAlphabet } from "nanoid";
 import newPeerConnection from "../connections/newPeerConnection";
 import newSocketConnection from "../connections/newSocketConnection";
 
-function useConnection() {
+function useConnection({ printMessage }) {
 	const [room, setRoom] = useState(null);
 	const [screenName, setScreenName] = useState("");
 	const socket = useRef(newSocketConnection([getOffer, getAnswer, addAnswer]));
-	const PC = useRef(newPeerConnection());
+	const PC = useRef(newPeerConnection({ printMessage }));
 
 	// HOST
 	async function create() {
@@ -50,16 +50,8 @@ function useConnection() {
 	}
 
 	// Communication
-	function handleScreenName(name) {
-		if (/^[a-z0-9]{4,12}$/i) {
-			setScreenName(name);
-		} else {
-			return new Error("invalid screen name");
-		}
-	}
-
-	function sendMessage(message) {
-		PC.current.sendMessage(message);
+	function sendMessage(screenName, message) {
+		PC.current.sendMessage(screenName, message);
 	}
 
 	return {
@@ -68,7 +60,7 @@ function useConnection() {
 		create,
 		sendMessage,
 		screenName,
-		setScreenName: handleScreenName,
+		setScreenName,
 	};
 }
 

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ConnectionContext } from "../../contexts/ConnectionContext";
 
-function Guest({ join, back }) {
+function Guest({ back }) {
 	const [input, setInput] = useState("");
 	const [isValid, setIsValid] = useState(false);
+	const { join } = useContext(ConnectionContext);
 
 	function handleInput(event) {
 		const { value } = event.target;

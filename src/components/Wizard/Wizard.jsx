@@ -1,13 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Guest from "./Guest";
 import ChooseName from "./ChooseName";
+import { ConnectionContext } from "../../contexts/ConnectionContext";
 
-function Wizard({ create, join, room, screenName, setScreenName, setIsReady }) {
+function Wizard() {
+	const { create, room } = useContext(ConnectionContext);
 	const [isGuest, setIsGuest] = useState(null);
-
-	useEffect(() => {
-		if (room && screenName) setIsReady(true);
-	}, [room, screenName]);
 
 	function handleGuest() {
 		setIsGuest((curr) => !curr);
@@ -26,10 +24,10 @@ function Wizard({ create, join, room, screenName, setScreenName, setIsReady }) {
 						</button>
 					</div>
 				) : (
-					<Guest join={join} back={handleGuest} />
+					<Guest back={handleGuest} />
 				)
 			) : (
-				<ChooseName setScreenName={setScreenName} />
+				<ChooseName />
 			)}
 		</main>
 	);

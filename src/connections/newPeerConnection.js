@@ -6,7 +6,7 @@ var iceServers = {
 	],
 };
 
-function newPeerConnection() {
+function newPeerConnection({ printMessage }) {
 	let peerConnection = new RTCPeerConnection(iceServers);
 
 	// message channel
@@ -20,7 +20,7 @@ function newPeerConnection() {
 		messageChannel.onopen = logEvent;
 		messageChannel.onclose = logEvent;
 		messageChannel.onerror = logEvent;
-		messageChannel.onmessage = logEvent;
+		messageChannel.onmessage = receiveMessage;
 	}
 
 	// HOST: create a new offer
@@ -78,8 +78,13 @@ function newPeerConnection() {
 	}
 
 	// ALL: communication functions
-	function sendMessage(message) {
-		messageChannel.send(message);
+	function sendMessage(screenName, message) {
+		messageChannel.send(JSON.stringify({ screenName, message }));
+	}
+
+	function receiveMessage(message) {
+		const { timeStamp } = message;
+		printMessage({ ...JSON.parse(message.data), timeStamp });
 	}
 
 	return {
