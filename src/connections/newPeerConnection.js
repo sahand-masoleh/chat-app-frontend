@@ -82,7 +82,13 @@ function newPeerConnection() {
 		messageChannel.send(message);
 	}
 
-	return { createOffer, getOffer, getAnswer, addAnswer, sendMessage };
+	return {
+		createOffer,
+		getOffer,
+		getAnswer,
+		addAnswer,
+		sendMessage,
+	};
 }
 
 export default newPeerConnection;

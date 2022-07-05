@@ -6,18 +6,11 @@ import newSocketConnection from "../connections/newSocketConnection";
 
 function useConnection() {
 	const [room, setRoom] = useState(null);
+	const [screenName, setScreenName] = useState("");
 	const socket = useRef(newSocketConnection([getOffer, getAnswer, addAnswer]));
 	const PC = useRef(newPeerConnection());
 
-	async function join(input) {
-		try {
-			await socket.current.joinRoom(input);
-			setRoom(input);
-		} catch (error) {
-			console.log(error);
-		}
-	}
-
+	// HOST
 	async function create() {
 		try {
 			await PC.current.createOffer();
@@ -25,8 +18,8 @@ function useConnection() {
 				"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
 				8
 			)();
-			setRoom(nanoid);
 			await socket.current.createRoom(nanoid);
+			setRoom(nanoid);
 		} catch (error) {
 			console.log(error);
 		}
@@ -37,20 +30,46 @@ function useConnection() {
 		socket.current.sendOffer(guestId, offer);
 	}
 
+	function addAnswer(answer) {
+		PC.current.addAnswer(answer);
+	}
+
+	// GUEST
+	async function join(input) {
+		try {
+			await socket.current.joinRoom(input);
+			setRoom(input);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	async function getAnswer(hostId, offer) {
 		const answer = await PC.current.getAnswer(offer);
 		socket.current.sendAnswer(hostId, answer);
 	}
 
-	function addAnswer(answer) {
-		PC.current.addAnswer(answer);
+	// Communication
+	function handleScreenName(name) {
+		if (/^[a-z0-9]{4,12}$/i) {
+			setScreenName(name);
+		} else {
+			return new Error("invalid screen name");
+		}
 	}
 
-	function message(message) {
+	function sendMessage(message) {
 		PC.current.sendMessage(message);
 	}
 
-	return [room, join, create, message];
+	return {
+		room,
+		join,
+		create,
+		sendMessage,
+		screenName,
+		setScreenName: handleScreenName,
+	};
 }
 
 export default useConnection;
