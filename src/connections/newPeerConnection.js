@@ -6,7 +6,7 @@ var iceServers = {
 	],
 };
 
-function newPeerConnection({ printMessage }) {
+function newPeerConnection(printMessage) {
 	let peerConnection = new RTCPeerConnection(iceServers);
 
 	// message channel
@@ -43,6 +43,7 @@ function newPeerConnection({ printMessage }) {
 	}
 
 	// HOST: get the offer to be send to the guest
+	// TODO: make a call to createOffer()
 	function getOffer() {
 		return peerConnection.localDescription;
 	}

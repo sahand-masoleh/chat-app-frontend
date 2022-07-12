@@ -9,7 +9,7 @@ function ChooseName() {
 	function handleInputChange(event) {
 		const { value } = event.target;
 		setInput(value);
-		if (/^[a-z0-9]*$/i.test(value)) {
+		if (/^[a-z0-9]{1,8}$/i.test(value)) {
 			setIsValid(true);
 		} else setIsValid(false);
 	}
