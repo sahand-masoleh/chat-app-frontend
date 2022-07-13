@@ -4,7 +4,7 @@ import { customAlphabet } from "nanoid";
 import newPeerConnection from "../connections/newPeerConnection";
 import newSocketConnection from "../connections/newSocketConnection";
 
-function useConnection(printMessage) {
+function useConnection(clientMethods) {
 	const [room, setRoom] = useState(null);
 	const socket = useRef(newSocketConnection([getOffer, getAnswer, addAnswer]));
 	const peers = useRef({});
@@ -13,7 +13,8 @@ function useConnection(printMessage) {
 	async function create() {
 		try {
 			const nanoid = customAlphabet(
-				"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+				// "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+				"1234567890",
 				8
 			)();
 			await socket.current.createRoom(nanoid);
@@ -25,7 +26,7 @@ function useConnection(printMessage) {
 
 	async function getOffer(guestId) {
 		// add new user to the collection of users
-		peers.current[guestId] = newPeerConnection(printMessage);
+		peers.current[guestId] = newPeerConnection(clientMethods);
 		await peers.current[guestId].createOffer();
 		const offer = peers.current[guestId].getOffer();
 		socket.current.sendOffer(guestId, offer);
@@ -41,7 +42,7 @@ function useConnection(printMessage) {
 			let users = await socket.current.joinRoom(input);
 			// create a collection of already connected users
 			for (let user of users) {
-				peers.current[user] = newPeerConnection(printMessage);
+				peers.current[user] = newPeerConnection(clientMethods);
 			}
 			setRoom(input);
 		} catch (error) {
@@ -61,7 +62,19 @@ function useConnection(printMessage) {
 		}
 	}
 
-	return { create, join, room, sendMessage };
+	// File Transfer
+	async function sendFile(file, name) {
+		try {
+			const arrayBuffer = await file.arrayBuffer();
+			for (let peer in peers.current) {
+				peers.current[peer].sendFile(arrayBuffer, name);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	return { create, join, room, sendMessage, sendFile };
 }
 
 export default useConnection;

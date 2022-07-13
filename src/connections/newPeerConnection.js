@@ -6,22 +6,12 @@ var iceServers = {
 	],
 };
 
-function newPeerConnection(printMessage) {
+var MAX_PACKET_SIZE = 65535;
+
+function newPeerConnection(clientMethods) {
 	let peerConnection = new RTCPeerConnection(iceServers);
 
-	// message channel
-	const messageChannel = peerConnection.createDataChannel("message-channel", {
-		negotiated: true,
-		id: 100,
-	});
-	messageChannel.binaryType = "arraybuffer";
-	// message channel events
-	{
-		messageChannel.onopen = logEvent;
-		messageChannel.onclose = logEvent;
-		messageChannel.onerror = logEvent;
-		messageChannel.onmessage = receiveMessage;
-	}
+	/** CONNECTION EVENTS & FUNCTIONS */
 
 	// HOST: create a new offer
 	// wrapped in a promise so that we can wait for the ice gathering to finish
@@ -41,13 +31,11 @@ function newPeerConnection(printMessage) {
 			}
 		});
 	}
-
 	// HOST: get the offer to be send to the guest
 	// TODO: make a call to createOffer()
 	function getOffer() {
 		return peerConnection.localDescription;
 	}
-
 	// GUEST: give the offer to the guest and get an answer
 	// wrapped in a promise so that we can wait for the ice gathering to finish
 	function getAnswer(offer) {
@@ -67,25 +55,81 @@ function newPeerConnection(printMessage) {
 			}
 		});
 	}
-
 	// HOST: add the answer from the guest
 	function addAnswer(answer) {
 		peerConnection.setRemoteDescription(answer);
 	}
 
-	// TEMP: log data channel events to the console
-	function logEvent(event) {
-		console.log(event);
-	}
+	/** MESSAGING EVENTS & FUNCTIONS */
 
-	// ALL: communication functions
+	// channel
+	const messageChannel = peerConnection.createDataChannel("message-channel", {
+		negotiated: true,
+		id: 100,
+	});
+	messageChannel.binaryType = "arraybuffer";
+	// events
+	{
+		// messageChannel.onopen = logEvent;
+		// messageChannel.onclose = logEvent;
+		messageChannel.onerror = (error) => console.error(error);
+		messageChannel.onmessage = receiveMessage;
+	}
+	// functions
 	function sendMessage(screenName, message) {
 		messageChannel.send(JSON.stringify({ screenName, message }));
 	}
-
 	function receiveMessage(message) {
 		const { timeStamp } = message;
-		printMessage({ ...JSON.parse(message.data), timeStamp });
+		clientMethods.receiveMessage({ ...JSON.parse(message.data), timeStamp });
+	}
+
+	/** FILE TRANSFER EVENTS & FUNCTIONS */
+
+	// events
+	// RECEIVER
+	{
+		peerConnection.ondatachannel = (event) => {
+			const { channel } = event;
+			// chrome does not support blob
+			channel.binaryType = "arraybuffer";
+
+			const receivedBuffers = [];
+			channel.onmessage = (message) => {
+				const { data } = message;
+				try {
+					if (data !== "EOF") {
+						receivedBuffers.push(data);
+					} else {
+						const arrayBuffer = receivedBuffers.reduce((acc, arrayBuffer) => {
+							const tmp = new Uint8Array(
+								acc.byteLength + arrayBuffer.byteLength
+							);
+							tmp.set(new Uint8Array(acc), 0);
+							tmp.set(new Uint8Array(arrayBuffer), acc.byteLength);
+							return tmp;
+						}, new Uint8Array());
+						clientMethods.receiveFile(arrayBuffer, channel.label);
+						channel.close();
+					}
+				} catch (error) {
+					console.error(error);
+				}
+			};
+		};
+	}
+	// functions
+	// SENDER
+	function sendFile(arrayBuffer, name) {
+		const channel = peerConnection.createDataChannel(name);
+		// chrome does not support blob
+		channel.binaryType = "arraybuffer";
+		channel.onopen = () => {
+			for (let i = 0; i < arrayBuffer.byteLength; i += MAX_PACKET_SIZE) {
+				channel.send(arrayBuffer.slice(i, i + MAX_PACKET_SIZE));
+			}
+			channel.send("EOF");
+		};
 	}
 
 	return {
@@ -94,6 +138,7 @@ function newPeerConnection(printMessage) {
 		getAnswer,
 		addAnswer,
 		sendMessage,
+		sendFile,
 	};
 }
 

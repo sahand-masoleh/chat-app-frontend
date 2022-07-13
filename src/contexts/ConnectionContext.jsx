@@ -4,8 +4,10 @@ import useConnection from "../hooks/useConnection";
 export const ConnectionContext = createContext();
 
 export function ConnectionProvider({ children }) {
-	// 	const { room, join, create, sendMessage, screenName, setScreenName } =
-	const { create, join, room, sendMessage } = useConnection(printMessage);
+	const { create, join, room, sendMessage, sendFile } = useConnection({
+		receiveMessage,
+		receiveFile,
+	});
 	const [isReady, setIsReady] = useState(false);
 	const [screenName, setScreenName] = useState("");
 	const [messages, setMessages] = useState([]);
@@ -14,8 +16,23 @@ export function ConnectionProvider({ children }) {
 		if (room && screenName) setIsReady(true);
 	}, [room, screenName]);
 
-	function printMessage(message) {
+	function receiveMessage(message) {
 		setMessages((messages) => [...messages, message]);
+	}
+
+	function receiveFile(arrayBuffer, name) {
+		try {
+			const blob = new Blob([arrayBuffer]);
+			const a = document.createElement("a");
+			const url = window.URL.createObjectURL(blob);
+			a.href = url;
+			a.download = name;
+			a.click();
+			window.URL.revokeObjectURL(url);
+			a.remove();
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	return (
@@ -26,6 +43,7 @@ export function ConnectionProvider({ children }) {
 				join,
 				create,
 				sendMessage,
+				sendFile,
 				// added in the context
 				screenName,
 				setScreenName,
