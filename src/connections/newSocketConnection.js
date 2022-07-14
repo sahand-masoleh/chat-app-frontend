@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 
-var socketioServer = "localhost:4000";
+// var socketioServer = "localhost:4000";
+var socketioServer = "https://chat-app-signaling-server.herokuapp.com/";
 
 function newSocketConnection([getOffer, getAnswer, addAnswer]) {
 	let socket = null;
@@ -91,6 +92,10 @@ function newSocketConnection([getOffer, getAnswer, addAnswer]) {
 		});
 	}
 
+	function leaveRoom() {
+		socket.emit("leave-room");
+	}
+
 	// HOST: send the SDP offer to the guest
 	function sendOffer(guestId, offer) {
 		socket.emit("sdp-offer", [guestId, offer]);
@@ -106,7 +111,7 @@ function newSocketConnection([getOffer, getAnswer, addAnswer]) {
 		if (socket) socket.off();
 	}
 
-	return { createRoom, joinRoom, sendOffer, sendAnswer, exit };
+	return { createRoom, joinRoom, leaveRoom, sendOffer, sendAnswer, exit };
 }
 
 export default newSocketConnection;

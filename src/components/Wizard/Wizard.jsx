@@ -1,10 +1,11 @@
-import { useState, useEffect, useContext } from "react";
-import Guest from "./Guest";
+import "./Wizard.scss";
+import { useState, useContext } from "react";
+import JoinRoom from "./JoinRoom";
 import ChooseName from "./ChooseName";
 import { ConnectionContext } from "../../contexts/ConnectionContext";
 
 function Wizard() {
-	const { create, room } = useContext(ConnectionContext);
+	const { create, room, leave } = useContext(ConnectionContext);
 	const [isGuest, setIsGuest] = useState(null);
 
 	function handleGuest() {
@@ -15,19 +16,19 @@ function Wizard() {
 		<main className="wizard">
 			{!room ? (
 				!isGuest ? (
-					<div className="wizard__select-role">
-						<button className="wizard__button" onClick={create}>
-							start a conversation
+					<>
+						<button className="wizard-button" onClick={create}>
+							<b>start</b> a conversation
 						</button>
-						<button className="wizard__button" onClick={() => handleGuest()}>
-							join a conversation
+						<button className="wizard-button" onClick={handleGuest}>
+							<b>join</b> a conversation
 						</button>
-					</div>
+					</>
 				) : (
-					<Guest back={handleGuest} />
+					<JoinRoom back={handleGuest} />
 				)
 			) : (
-				<ChooseName />
+				<ChooseName back={leave} />
 			)}
 		</main>
 	);

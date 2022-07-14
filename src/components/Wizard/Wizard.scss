@@ -1,0 +1,8 @@
+@use "../../styles/vars" as *;
+
+.wizard {
+	display: grid;
+	justify-content: center;
+	grid-auto-columns: minmax(0, 30rem);
+	gap: 2rem;
+}

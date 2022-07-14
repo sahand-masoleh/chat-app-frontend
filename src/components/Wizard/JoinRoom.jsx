@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { ConnectionContext } from "../../contexts/ConnectionContext";
 
-function Guest({ back }) {
+function JoinRoom({ back }) {
 	const [input, setInput] = useState("");
 	const [isValid, setIsValid] = useState(false);
 	const { join } = useContext(ConnectionContext);
@@ -23,25 +23,31 @@ function Guest({ back }) {
 	}
 
 	return (
-		<div className="wizard__enter-room">
-			<button className="wizard__button" onClick={back}>
-				back
-			</button>
-			<input
-				type="text"
-				className="wizard__input"
-				value={input}
-				onChange={handleInput}
-			/>
+		<>
+			<div className="input-box">
+				<label htmlFor="input" className="input-box__title">
+					enter the room number
+				</label>
+				<input
+					id="input"
+					type="text"
+					className="input-box__input"
+					value={input}
+					onChange={handleInput}
+				/>
+			</div>
 			<button
-				className="wizard__button"
+				className="wizard-button"
 				onClick={handleJoin}
 				disabled={!isValid}
 			>
 				enter room
 			</button>
-		</div>
+			<button className="wizard-button" onClick={back}>
+				back
+			</button>
+		</>
 	);
 }
 
-export default Guest;
+export default JoinRoom;

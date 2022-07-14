@@ -55,6 +55,12 @@ function useConnection(clientMethods) {
 		socket.current.sendAnswer(hostId, answer);
 	}
 
+	// ALL
+	function leave() {
+		setRoom(null);
+		socket.current.leaveRoom();
+	}
+
 	// Communication
 	function sendMessage(screenName, message) {
 		for (let peer in peers.current) {
@@ -74,7 +80,7 @@ function useConnection(clientMethods) {
 		}
 	}
 
-	return { create, join, room, sendMessage, sendFile };
+	return { create, join, leave, room, sendMessage, sendFile };
 }
 
 export default useConnection;

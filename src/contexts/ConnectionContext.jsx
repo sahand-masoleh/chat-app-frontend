@@ -4,7 +4,7 @@ import useConnection from "../hooks/useConnection";
 export const ConnectionContext = createContext();
 
 export function ConnectionProvider({ children }) {
-	const { create, join, room, sendMessage, sendFile } = useConnection({
+	const { create, join, leave, room, sendMessage, sendFile } = useConnection({
 		receiveMessage,
 		receiveFile,
 	});
@@ -20,6 +20,7 @@ export function ConnectionProvider({ children }) {
 		setMessages((messages) => [...messages, message]);
 	}
 
+	// TODO: move this to the hook
 	function receiveFile(arrayBuffer, name) {
 		try {
 			const blob = new Blob([arrayBuffer]);
@@ -42,6 +43,7 @@ export function ConnectionProvider({ children }) {
 				room,
 				join,
 				create,
+				leave,
 				sendMessage,
 				sendFile,
 				// added in the context

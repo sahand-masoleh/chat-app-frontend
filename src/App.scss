@@ -1,0 +1,30 @@
+@use "./styles/vars" as *;
+@use "./styles/components" as *;
+
+@font-face {
+	font-family: "Signika Negative";
+	src: url(./assets/fonts/SignikaNegative-VariableFont_wght.ttf)
+		format("woff2-variations");
+	font-weight: 300 400 500 600 700;
+}
+
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+* {
+	font-family: "Signika Negative";
+}
+
+body {
+	background-color: $c-l1;
+	min-height: 100vh;
+	display: grid;
+	place-items: center;
+	grid-auto-columns: minmax(0, 1fr);
+	padding: 0 1rem;
+}

@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.scss";
 import { useContext } from "react";
 import Wizard from "./components/Wizard";
 import Chat from "./components/Chat";

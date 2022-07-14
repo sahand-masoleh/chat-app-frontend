@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { ConnectionContext } from "../../contexts/ConnectionContext";
 
-function ChooseName() {
+function ChooseName({ back }) {
 	const [input, setInput] = useState("");
 	const [isValid, setIsValid] = useState(false);
 	const { setScreenName } = useContext(ConnectionContext);
@@ -19,22 +19,30 @@ function ChooseName() {
 	}
 
 	return (
-		<div className="wizard__enter-name">
-			<h2 className="wizard__title">choose a screen name</h2>
-			<input
-				type="text"
-				className="wizard__input"
-				onChange={handleInputChange}
-				value={input}
-			/>
+		<>
+			<div className="input-box">
+				<label htmlFor="input" className="input-box__title">
+					choose a screen name
+				</label>
+				<input
+					id="input"
+					type="text"
+					className="input-box__input"
+					onChange={handleInputChange}
+					value={input}
+				/>
+			</div>
 			<button
-				className="wizard__button"
+				className="wizard-button"
 				onClick={handleClick}
 				disabled={!isValid}
 			>
 				start chatting
 			</button>
-		</div>
+			<button className="wizard-button" onClick={back}>
+				back
+			</button>
+		</>
 	);
 }
 
