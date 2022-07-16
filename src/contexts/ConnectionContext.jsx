@@ -4,9 +4,9 @@ import useConnection from "../hooks/useConnection";
 export const ConnectionContext = createContext();
 
 export function ConnectionProvider({ children }) {
-	const { create, join, leave, room, sendMessage, sendFile } = useConnection({
-		receiveMessage,
-		receiveFile,
+	const { create, join, leave, room, sendText, sendFile } = useConnection({
+		handleText,
+		handleFile,
 	});
 	const [isReady, setIsReady] = useState(false);
 	const [screenName, setScreenName] = useState("");
@@ -16,21 +16,17 @@ export function ConnectionProvider({ children }) {
 		if (room && screenName) setIsReady(true);
 	}, [room, screenName]);
 
-	function receiveMessage(message) {
-		setMessages((messages) => [...messages, message]);
+	function handleText(text, sender, timeStamp) {
+		setMessages((messages) => [
+			...messages,
+			{ type: "text", text, sender, timeStamp },
+		]);
 	}
 
-	// TODO: move this to the hook
-	function receiveFile(arrayBuffer, name) {
+	function handleFile(blob, info) {
+		console.log(blob);
 		try {
-			const blob = new Blob([arrayBuffer]);
-			const a = document.createElement("a");
-			const url = window.URL.createObjectURL(blob);
-			a.href = url;
-			a.download = name;
-			a.click();
-			window.URL.revokeObjectURL(url);
-			a.remove();
+			setMessages((messages) => [...messages, info]);
 		} catch (error) {
 			console.error(error);
 		}
@@ -44,7 +40,7 @@ export function ConnectionProvider({ children }) {
 				join,
 				create,
 				leave,
-				sendMessage,
+				sendText,
 				sendFile,
 				// added in the context
 				screenName,

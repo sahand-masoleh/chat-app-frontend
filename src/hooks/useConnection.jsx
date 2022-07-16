@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { customAlphabet } from "nanoid";
 
 import newPeerConnection from "../connections/newPeerConnection";
@@ -8,6 +8,13 @@ function useConnection(clientMethods) {
 	const [room, setRoom] = useState(null);
 	const socket = useRef(newSocketConnection([getOffer, getAnswer, addAnswer]));
 	const peers = useRef({});
+
+	const hookMethods = {
+		receiveFile,
+		receiveText,
+		// receiveImage,
+		// receiveVoice
+	};
 
 	// HOST
 	async function create() {
@@ -26,7 +33,7 @@ function useConnection(clientMethods) {
 
 	async function getOffer(guestId) {
 		// add new user to the collection of users
-		peers.current[guestId] = newPeerConnection(clientMethods);
+		peers.current[guestId] = newPeerConnection(hookMethods);
 		await peers.current[guestId].createOffer();
 		const offer = peers.current[guestId].getOffer();
 		socket.current.sendOffer(guestId, offer);
@@ -42,7 +49,7 @@ function useConnection(clientMethods) {
 			let users = await socket.current.joinRoom(input);
 			// create a collection of already connected users
 			for (let user of users) {
-				peers.current[user] = newPeerConnection(clientMethods);
+				peers.current[user] = newPeerConnection(hookMethods);
 			}
 			setRoom(input);
 		} catch (error) {
@@ -62,25 +69,38 @@ function useConnection(clientMethods) {
 	}
 
 	// Communication
-	function sendMessage(screenName, message) {
+	function sendText(text, sender) {
 		for (let peer in peers.current) {
-			peers.current[peer].sendMessage(screenName, message);
+			peers.current[peer].sendText(text, sender);
 		}
 	}
 
+	function receiveText(text, sender, timeStamp) {
+		clientMethods.handleText(text, sender, timeStamp);
+	}
+
 	// File Transfer
-	async function sendFile(file, name) {
+	async function sendFile(file, info) {
 		try {
 			const arrayBuffer = await file.arrayBuffer();
 			for (let peer in peers.current) {
-				peers.current[peer].sendFile(arrayBuffer, name);
+				peers.current[peer].sendFile(arrayBuffer, info);
 			}
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
-	return { create, join, leave, room, sendMessage, sendFile };
+	function receiveFile(arrayBuffer, info) {
+		try {
+			const blob = new Blob([arrayBuffer]);
+			clientMethods.handleFile(blob, info);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	return { create, join, leave, room, sendText, sendFile };
 }
 
 export default useConnection;

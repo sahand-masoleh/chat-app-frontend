@@ -1,10 +1,62 @@
+import "./Chat.scss";
 import { useState, useContext, useMemo, useRef } from "react";
 import { ConnectionContext } from "../../contexts/ConnectionContext";
 
+import { ReactComponent as SendIcon } from "../../assets/icons/send.svg";
+import { ReactComponent as AttachIcon } from "../../assets/icons/attach.svg";
+
 function Chat() {
-	const { room, screenName, sendMessage, sendFile, messages } =
-		useContext(ConnectionContext);
+	return (
+		<main className="chat">
+			<Top />
+			<Messages />
+			<Bottom />
+		</main>
+	);
+}
+
+export default Chat;
+
+function Top() {
+	const { room, screenName } = useContext(ConnectionContext);
+	return (
+		<div className="top">
+			<div className="top__wrapper wrapper">
+				<h2 className="top__room">{room}</h2>
+				<h3 className="top__name">{screenName}</h3>
+			</div>
+		</div>
+	);
+}
+
+function Messages() {
+	const { messages } = useContext(ConnectionContext);
+	const messagesMap = useMemo(() => {
+		return messages.map((entry) => {
+			const { type } = entry;
+			if (type === "text") {
+				const { text, sender, timeStamp } = entry;
+				return <p key={timeStamp}>{`${sender}: ${text}`}</p>;
+			} else if (type === "file") {
+				// info = {type, sender, size, name, timeStamp}
+				const { sender, timeStamp, name, size } = entry;
+				return <p key={timeStamp}>{`${sender}: ${name} (${size})`}</p>;
+			}
+		});
+	}, [messages]);
+
+	return (
+		<div className="messages">
+			<div className="messages__wrapper wrapper">{messagesMap}</div>
+		</div>
+	);
+}
+
+function Bottom() {
+	const { sendText, sendFile, screenName } = useContext(ConnectionContext);
+
 	const [input, setInput] = useState("");
+	const textRef = useRef();
 	const fileRef = useRef();
 
 	function handleInputChange(event) {
@@ -13,44 +65,60 @@ function Chat() {
 	}
 
 	function handleSendMessage() {
-		sendMessage(screenName, input);
+		sendText(input, screenName);
+		setInput("");
+		textRef.current.focus();
 	}
 
-	async function handleSendFile(event) {
+	function handleChooseFile(event) {
 		event.preventDefault();
-		const file = fileRef.current.files[0];
-		await sendFile(file, file.name);
+		fileRef.current.click();
 	}
 
-	const messagesMap = useMemo(() => {
-		return messages.map((entry) => {
-			const { timeStamp, screenName, message } = entry;
-			return <p key={timeStamp}>{`${screenName}: ${message}`}</p>;
-		});
-	}, [messages]);
+	async function handleSendFile() {
+		const file = fileRef.current.files[0];
+		const info = {
+			type: "file",
+			sender: screenName,
+			size: file.size,
+			name: file.name,
+		};
+		if (file) {
+			await sendFile(file, info);
+		}
+	}
 
 	return (
-		<main className="chat">
-			<h2>{room}</h2>
-			<h3>{screenName}</h3>
-			<div className="chat__mesages">{messagesMap}</div>
-			<div className="chat__input new-message">
-				<input
-					type="text"
-					className="new-message__input"
+		<div className="bottom">
+			<div className="bottom__wrapper wrapper">
+				{/* TEXT */}
+				<textarea
+					rows="2"
+					className="bottom__textarea"
 					onChange={handleInputChange}
 					value={input}
-				/>
-				<button className="new-message__text-btn" onClick={handleSendMessage}>
-					send text
+					ref={textRef}
+				></textarea>
+				<button
+					className="bottom__button chat-button"
+					onClick={handleSendMessage}
+				>
+					<SendIcon className="chat-button__svg" />
 				</button>
-				<form>
-					<input type="file" id="file-input" ref={fileRef} />
-					<button onClick={handleSendFile}>send file</button>
-				</form>
+				{/* FILE */}
+				<input
+					type="file"
+					className="bottom__file-input"
+					ref={fileRef}
+					onChange={handleSendFile}
+				/>
+				<button
+					className="bottom__button chat-button"
+					onClick={handleChooseFile}
+				>
+					<AttachIcon className="chat-button__svg" />
+				</button>
 			</div>
-		</main>
+		</div>
 	);
 }
-
-export default Chat;

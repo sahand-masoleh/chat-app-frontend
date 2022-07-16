@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ConnectionContext } from "../../contexts/ConnectionContext";
 
 function ChooseName({ back }) {
@@ -6,16 +6,27 @@ function ChooseName({ back }) {
 	const [isValid, setIsValid] = useState(false);
 	const { setScreenName } = useContext(ConnectionContext);
 
+	useEffect(() => {
+		let storedScreenName = window.localStorage.getItem("screen-name");
+		if (storedScreenName) {
+			setInput(storedScreenName);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (/^[a-z0-9]{1,8}$/i.test(input)) {
+			setIsValid(true);
+		} else setIsValid(false);
+	}, [input]);
+
 	function handleInputChange(event) {
 		const { value } = event.target;
 		setInput(value);
-		if (/^[a-z0-9]{1,8}$/i.test(value)) {
-			setIsValid(true);
-		} else setIsValid(false);
 	}
 
 	function handleClick() {
 		setScreenName(input);
+		window.localStorage.setItem("screen-name", input);
 	}
 
 	return (
