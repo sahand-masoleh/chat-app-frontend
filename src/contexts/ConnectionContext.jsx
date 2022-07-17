@@ -4,7 +4,14 @@ import useConnection from "../hooks/useConnection";
 export const ConnectionContext = createContext();
 
 export function ConnectionProvider({ children }) {
-	const { create, join, leave, room, sendText, sendFile } = useConnection({
+	const {
+		create,
+		join,
+		leave,
+		room,
+		sendText: sendTextHook,
+		sendFile: sendFileHook,
+	} = useConnection({
 		handleText,
 		handleFile,
 		handleFileRequest,
@@ -47,6 +54,19 @@ export function ConnectionProvider({ children }) {
 		}
 	}
 
+	function sendText(input) {
+		sendTextHook(input, screenName);
+	}
+
+	async function sendFile(file) {
+		const info = {
+			sender: screenName,
+			size: file.size,
+			name: file.name,
+		};
+		await sendFileHook(file, info);
+	}
+
 	return (
 		<ConnectionContext.Provider
 			value={{
@@ -55,9 +75,9 @@ export function ConnectionProvider({ children }) {
 				join,
 				create,
 				leave,
-				sendText,
 				sendFile,
 				// added in the context
+				sendText,
 				screenName,
 				setScreenName,
 				isReady,

@@ -10,9 +10,9 @@ function useConnection(clientMethods) {
 	const peers = useRef({});
 
 	const hookMethods = {
-		receiveText,
+		receiveText: clientMethods.handleText,
 		receiveFile,
-		receiveFileRequest,
+		receiveFileRequest: clientMethods.handleFileRequest,
 		// receiveImage,
 		// receiveVoice
 	};
@@ -75,10 +75,6 @@ function useConnection(clientMethods) {
 		}
 	}
 
-	function receiveText(text, sender, timeStamp) {
-		clientMethods.handleText(text, sender, timeStamp);
-	}
-
 	// File Transfer
 	async function sendFile(file, info) {
 		try {
@@ -98,10 +94,6 @@ function useConnection(clientMethods) {
 		} catch (error) {
 			console.error(error);
 		}
-	}
-
-	function receiveFileRequest(request, info) {
-		clientMethods.handleFileRequest(request, info);
 	}
 
 	return { create, join, leave, room, sendText, sendFile };

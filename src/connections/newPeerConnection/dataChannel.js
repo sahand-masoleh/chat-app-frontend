@@ -42,7 +42,7 @@ export function receive(channel, hookMethods) {
 	channel.binaryType = "arraybuffer";
 
 	const receivedBuffers = [];
-	// info = {type, sender, size, name}
+	// info = {sender, size, name}
 	let info = null;
 	let timeStamp = null;
 
