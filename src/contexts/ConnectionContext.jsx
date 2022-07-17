@@ -7,6 +7,7 @@ export function ConnectionProvider({ children }) {
 	const { create, join, leave, room, sendText, sendFile } = useConnection({
 		handleText,
 		handleFile,
+		handleFileRequest,
 	});
 	const [isReady, setIsReady] = useState(false);
 	const [screenName, setScreenName] = useState("");
@@ -23,10 +24,24 @@ export function ConnectionProvider({ children }) {
 		]);
 	}
 
-	function handleFile(blob, info) {
-		console.log(blob);
+	function handleFileRequest(request, info) {
+		const { sender, size, name, timeStamp } = info;
+		setMessages((messages) => [
+			...messages,
+			{ type: "request", sender, size, name, timeStamp, request },
+		]);
+	}
+
+	function handleFile(arrayBuffer, name) {
 		try {
-			setMessages((messages) => [...messages, info]);
+			const blob = new Blob([arrayBuffer]);
+			const a = document.createElement("a");
+			const url = window.URL.createObjectURL(blob);
+			a.href = url;
+			a.download = name;
+			a.click();
+			window.URL.revokeObjectURL(url);
+			a.remove();
 		} catch (error) {
 			console.error(error);
 		}

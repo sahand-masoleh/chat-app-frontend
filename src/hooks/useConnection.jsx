@@ -10,8 +10,9 @@ function useConnection(clientMethods) {
 	const peers = useRef({});
 
 	const hookMethods = {
-		receiveFile,
 		receiveText,
+		receiveFile,
+		receiveFileRequest,
 		// receiveImage,
 		// receiveVoice
 	};
@@ -34,8 +35,7 @@ function useConnection(clientMethods) {
 	async function getOffer(guestId) {
 		// add new user to the collection of users
 		peers.current[guestId] = newPeerConnection(hookMethods);
-		await peers.current[guestId].createOffer();
-		const offer = peers.current[guestId].getOffer();
+		const offer = await peers.current[guestId].getOffer();
 		socket.current.sendOffer(guestId, offer);
 	}
 
@@ -91,13 +91,17 @@ function useConnection(clientMethods) {
 		}
 	}
 
-	function receiveFile(arrayBuffer, info) {
+	function receiveFile(arrayBuffer, name) {
 		try {
 			const blob = new Blob([arrayBuffer]);
-			clientMethods.handleFile(blob, info);
+			clientMethods.handleFile(blob, name);
 		} catch (error) {
 			console.error(error);
 		}
+	}
+
+	function receiveFileRequest(request, info) {
+		clientMethods.handleFileRequest(request, info);
 	}
 
 	return { create, join, leave, room, sendText, sendFile };

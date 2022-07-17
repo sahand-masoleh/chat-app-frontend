@@ -107,7 +107,6 @@ function newSocketConnection([getOffer, getAnswer, addAnswer]) {
 	}
 
 	function exit() {
-		console.log("unsubscribing to all events...");
 		if (socket) socket.off();
 	}
 
