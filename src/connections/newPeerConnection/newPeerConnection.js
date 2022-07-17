@@ -1,4 +1,5 @@
-import receiveDataChannel from "./receiveDataChannel";
+import * as dataChannel from "./dataChannel";
+import setupTextChannel from "./setupTextChannel";
 
 var iceServers = {
 	iceServers: [
@@ -7,8 +8,6 @@ var iceServers = {
 		},
 	],
 };
-
-var MAX_PACKET_SIZE = 65535;
 
 function newPeerConnection(hookMethods) {
 	let peerConnection = new RTCPeerConnection(iceServers);
@@ -62,72 +61,26 @@ function newPeerConnection(hookMethods) {
 		peerConnection.setRemoteDescription(answer);
 	}
 
-	/** MESSAGING EVENTS & FUNCTIONS */
+	/** TEXT CHANNEL */
 
-	// channel
 	const textChannel = peerConnection.createDataChannel("text-channel", {
 		negotiated: true,
 		id: 100,
 	});
-	textChannel.binaryType = "arraybuffer";
-	// events
-	{
-		// textChannel.onopen = logEvent;
-		// textChannel.onclose = logEvent;
-		textChannel.onerror = (error) => console.error(error);
-		textChannel.onmessage = receiveText;
-	}
-	// functions
-	function sendText(text, sender) {
-		textChannel.send(JSON.stringify({ text, sender }));
-	}
-	function receiveText(message) {
-		const { timeStamp } = message;
-		const { text, sender } = JSON.parse(message.data);
-		hookMethods.receiveText(text, sender, timeStamp);
-	}
+	const { sendText } = setupTextChannel(textChannel, hookMethods);
 
 	/** FILE TRANSFER EVENTS & FUNCTIONS */
 
-	// events
 	// RECEIVER
-	peerConnection.ondatachannel = (event) =>
-		receiveDataChannel(event, hookMethods);
+	peerConnection.ondatachannel = (event) => {
+		const { channel } = event;
+		dataChannel.receive(channel, hookMethods);
+	};
 
-	// functions
 	// SENDER
 	function sendFile(arrayBuffer, info) {
 		const channel = peerConnection.createDataChannel("data-channel");
-		// chrome does not support blob
-		channel.binaryType = "arraybuffer";
-
-		// fist the info is sent
-		// the receiver can either accept or refuse the file
-		channel.onopen = () => {
-			channel.send(JSON.stringify(info));
-		};
-
-		channel.onmessage = (message) => {
-			const { data } = message;
-
-			// only if the receiver sends an 'ACCEPT' signal, start uploading
-			if (data === "ACCEPT") {
-				// split the file into chunks
-				for (let i = 0; i < arrayBuffer.byteLength; i += MAX_PACKET_SIZE) {
-					channel.send(arrayBuffer.slice(i, i + MAX_PACKET_SIZE));
-				}
-				// send an 'EOF' signal to the receiver
-				// so that they the upload is complete
-				channel.send("EOF");
-			}
-		};
-
-		// unsubscribe from events
-		channel.onclose = () => {
-			channel.onopen = null;
-			channel.onmessage = null;
-			channel.onclose = null;
-		};
+		dataChannel.send(channel, arrayBuffer, info);
 	}
 
 	return {

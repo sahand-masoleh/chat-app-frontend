@@ -1,7 +1,43 @@
 import newRequest from "./newRequest";
 
-function receiveDataChannel(event, hookMethods) {
-	const { channel } = event;
+var MAX_PACKET_SIZE = 65535;
+
+// create a datachannel to transfer  a file
+export function send(channel, arrayBuffer, info) {
+	// chrome does not support blob
+	channel.binaryType = "arraybuffer";
+
+	// fist the info is sent
+	// the receiver can either accept or refuse the file
+	channel.onopen = () => {
+		channel.send(JSON.stringify(info));
+	};
+
+	channel.onmessage = (message) => {
+		const { data } = message;
+
+		// only if the receiver sends an 'ACCEPT' signal, start uploading
+		if (data === "ACCEPT") {
+			// split the file into chunks
+			for (let i = 0; i < arrayBuffer.byteLength; i += MAX_PACKET_SIZE) {
+				channel.send(arrayBuffer.slice(i, i + MAX_PACKET_SIZE));
+			}
+			// send an 'EOF' signal to the receiver
+			// so that they the upload is complete
+			channel.send("EOF");
+		}
+	};
+
+	// unsubscribe from events
+	channel.onclose = () => {
+		channel.onopen = null;
+		channel.onmessage = null;
+		channel.onclose = null;
+	};
+}
+
+// react to data channel created by the sender to transfer a file
+export function receive(channel, hookMethods) {
 	// chrome does not support blob
 	channel.binaryType = "arraybuffer";
 
@@ -9,6 +45,7 @@ function receiveDataChannel(event, hookMethods) {
 	// info = {type, sender, size, name}
 	let info = null;
 	let timeStamp = null;
+
 	channel.onmessage = async (message) => {
 		const { data } = message;
 		try {
@@ -65,5 +102,3 @@ function receiveDataChannel(event, hookMethods) {
 		channel.onclose = null;
 	};
 }
-
-export default receiveDataChannel;
