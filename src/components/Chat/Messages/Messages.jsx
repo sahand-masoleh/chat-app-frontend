@@ -59,7 +59,6 @@ function Messages() {
 							name={name}
 							size={size}
 							timeStamp={timeStamp}
-							entry={entry}
 						/>
 					);
 				}

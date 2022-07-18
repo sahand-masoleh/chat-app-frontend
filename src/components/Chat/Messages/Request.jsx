@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+
+import { ConnectionContext } from "@/contexts/ConnectionContext";
 
 import fileSize from "filesize";
 
@@ -10,12 +12,12 @@ import { ReactComponent as CrossIcon } from "@/assets/icons/cross.svg";
 import { ReactComponent as DocumentIcon } from "@/assets/icons/document.svg";
 import { ReactComponent as SaveIcon } from "@/assets/icons/save.svg";
 
-function Request({ dir, request, name, size, timeStamp, entry }) {
+function Request({ dir, request, name, size, timeStamp }) {
 	const [status, setStatus] = useState(null);
+	const { downloadList } = useContext(ConnectionContext);
 
 	function handleAccept() {
 		request.accept(timeStamp);
-		setStatus("accepted");
 	}
 
 	function handleRefuse() {
@@ -24,7 +26,8 @@ function Request({ dir, request, name, size, timeStamp, entry }) {
 	}
 
 	function handleDownload() {
-		const { url } = entry;
+		const url = downloadList.current[timeStamp];
+		console.log(typeof url);
 		const a = document.createElement("a");
 		a.href = url;
 		a.download = name;

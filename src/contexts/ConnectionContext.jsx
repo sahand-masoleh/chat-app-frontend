@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import useConnection from "../hooks/useConnection";
 
 export const ConnectionContext = createContext();
@@ -19,6 +19,7 @@ export function ConnectionProvider({ children }) {
 	const [isReady, setIsReady] = useState(false);
 	const [screenName, setScreenName] = useState("");
 	const [messages, setMessages] = useState([]);
+	const downloadList = useRef({});
 
 	useEffect(() => {
 		if (room && screenName) setIsReady(true);
@@ -65,12 +66,14 @@ export function ConnectionProvider({ children }) {
 		try {
 			const blob = new Blob([arrayBuffer]);
 			const url = window.URL.createObjectURL(blob);
-			setMessages((messages) => {
-				const index = messages.findIndex((e) => e.timeStamp === timeStamp);
-				const tempMessages = [...messages];
-				tempMessages[index].url = url;
-				return tempMessages;
-			});
+			downloadList.current[timeStamp] = url;
+
+			// const a = document.createElement("a");
+			// a.href = url;
+			// a.download = name;
+			// a.click();
+			// window.URL.revokeObjectURL(url);
+			// a.remove();
 		} catch (error) {
 			console.error(error);
 		}
@@ -103,6 +106,7 @@ export function ConnectionProvider({ children }) {
 				setScreenName,
 				isReady,
 				messages,
+				downloadList,
 			}}
 		>
 			{children}
