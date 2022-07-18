@@ -1,0 +1,37 @@
+@use "../../styles/vars" as *;
+
+.bottom {
+	background-color: $c-l2;
+	padding: 2ch;
+	max-height: 10rem;
+
+	&__wrapper {
+		display: flex;
+		align-items: center;
+		gap: 1ch;
+	}
+
+	&__textarea {
+		flex-grow: 1;
+		min-width: 0;
+		resize: none;
+		font-size: $fs-s;
+		padding: 1ch;
+		border: none;
+		border-radius: 0.25rem;
+		text-overflow: ellipsis;
+		height: max-content;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	&__file-input {
+		position: absolute;
+		top: -1000px;
+		left: -1000px;
+		opacity: 0;
+		z-index: -1;
+	}
+}

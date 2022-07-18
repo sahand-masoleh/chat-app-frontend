@@ -24,10 +24,10 @@ export function ConnectionProvider({ children }) {
 		if (room && screenName) setIsReady(true);
 	}, [room, screenName]);
 
-	function handleText(text, sender, timeStamp) {
+	function handleText(text, sender) {
 		setMessages((messages) => [
 			...messages,
-			{ type: "text", text, sender, timeStamp },
+			{ type: "text-in", text, sender, timeStamp: Date.now() },
 		]);
 	}
 
@@ -54,8 +54,14 @@ export function ConnectionProvider({ children }) {
 		}
 	}
 
-	function sendText(input) {
-		sendTextHook(input, screenName);
+	function sendText(text) {
+		if (text) {
+			setMessages((messages) => [
+				...messages,
+				{ type: "text-out", text, sender: screenName, timeStamp: Date.now() },
+			]);
+			sendTextHook(text, screenName);
+		}
 	}
 
 	async function sendFile(file) {

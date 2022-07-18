@@ -5,9 +5,8 @@ function setupTextChannel(channel, hookMethods) {
 	{
 		channel.onerror = (error) => console.error(error);
 		channel.onmessage = (message) => {
-			const { timeStamp } = message;
 			const { text, sender } = JSON.parse(message.data);
-			hookMethods.receiveText(text, sender, timeStamp);
+			hookMethods.receiveText(text, sender);
 		};
 	}
 	// functions

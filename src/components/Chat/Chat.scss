@@ -1,9 +1,9 @@
 @use "../../styles/vars" as *;
-@use "sass:color";
 
 .chat {
 	height: 100%;
 	width: 100%;
+
 	display: grid;
 	grid-template-rows: auto 1fr auto;
 	grid-template-columns: minmax(0, 1fr);
@@ -11,6 +11,7 @@
 
 .top {
 	background-color: $c-l2;
+	height: 5rem;
 
 	&__wrapper {
 		display: flex;
@@ -34,39 +35,5 @@
 		width: 100%;
 		object-fit: contain;
 		color: $c-a;
-	}
-}
-
-.bottom {
-	background-color: $c-l2;
-	padding: 2ch;
-
-	&__wrapper {
-		display: flex;
-		align-items: center;
-		gap: 1ch;
-	}
-
-	&__textarea {
-		flex-grow: 1;
-		min-width: 0;
-		resize: none;
-		font-size: $fs-s;
-		padding: 1ch;
-		border: none;
-		border-radius: 0.25rem;
-		text-overflow: ellipsis;
-
-		&:focus {
-			outline: none;
-		}
-	}
-
-	&__file-input {
-		position: absolute;
-		top: -1000px;
-		left: -1000px;
-		opacity: 0;
-		z-index: -1;
 	}
 }

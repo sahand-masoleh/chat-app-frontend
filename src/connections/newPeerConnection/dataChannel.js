@@ -53,7 +53,7 @@ export function receive(channel, hookMethods) {
 			// empty means the beginning
 			if (!info) {
 				info = JSON.parse(data);
-				timeStamp = message.timeStamp;
+				timeStamp = Date.now();
 				// we need the user's permission to receive the file
 				// newRequest() wraps around promise
 				// resovle() and reject() are passed to the client
