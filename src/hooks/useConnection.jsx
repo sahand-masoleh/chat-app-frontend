@@ -87,10 +87,10 @@ function useConnection(clientMethods) {
 		}
 	}
 
-	function receiveFile(arrayBuffer, name) {
+	function receiveFile(arrayBuffer, name, timeStamp) {
 		try {
 			const blob = new Blob([arrayBuffer]);
-			clientMethods.handleFile(blob, name);
+			clientMethods.handleFile(blob, name, timeStamp);
 		} catch (error) {
 			console.error(error);
 		}

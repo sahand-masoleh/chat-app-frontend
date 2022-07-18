@@ -3,9 +3,9 @@
 
 @font-face {
 	font-family: "Signika Negative";
-	src: url(./assets/fonts/SignikaNegative-VariableFont_wght.ttf)
-		format("woff2-variations");
-	font-weight: 300 400 500 600 700;
+	font-style: normal;
+	font-weight: 300 700;
+	src: url(./assets/fonts/SignikaNegative-VariableFont_wght.ttf) format("woff2");
 }
 
 *,
@@ -21,6 +21,7 @@
 }
 
 #root {
+	// TODO: fix height on mobile
 	background-color: $c-l1;
 	min-height: 100vh;
 	display: grid;

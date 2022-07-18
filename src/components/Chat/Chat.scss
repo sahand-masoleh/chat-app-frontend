@@ -21,19 +21,3 @@
 		padding: 1ch;
 	}
 }
-
-.chat-button {
-	all: unset;
-	height: 2rem;
-	width: 2rem;
-	flex-shrink: 0;
-	border: none;
-	cursor: pointer;
-
-	&__svg {
-		height: 100%;
-		width: 100%;
-		object-fit: contain;
-		color: $c-a;
-	}
-}

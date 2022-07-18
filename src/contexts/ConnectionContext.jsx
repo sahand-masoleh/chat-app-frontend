@@ -24,52 +24,67 @@ export function ConnectionProvider({ children }) {
 		if (room && screenName) setIsReady(true);
 	}, [room, screenName]);
 
+	// TEXT MESSAGES
 	function handleText(text, sender) {
 		setMessages((messages) => [
 			...messages,
-			{ type: "text-in", text, sender, timeStamp: Date.now() },
+			{ type: "text", dir: "in", text, sender, timeStamp: Date.now() },
 		]);
 	}
-
-	function handleFileRequest(request, info) {
-		const { sender, size, name, timeStamp } = info;
-		setMessages((messages) => [
-			...messages,
-			{ type: "request", sender, size, name, timeStamp, request },
-		]);
-	}
-
-	function handleFile(arrayBuffer, name) {
-		try {
-			const blob = new Blob([arrayBuffer]);
-			const a = document.createElement("a");
-			const url = window.URL.createObjectURL(blob);
-			a.href = url;
-			a.download = name;
-			a.click();
-			window.URL.revokeObjectURL(url);
-			a.remove();
-		} catch (error) {
-			console.error(error);
-		}
-	}
-
 	function sendText(text) {
 		if (text) {
 			setMessages((messages) => [
 				...messages,
-				{ type: "text-out", text, sender: screenName, timeStamp: Date.now() },
+				{
+					type: "text",
+					dir: "out",
+					text,
+					sender: screenName,
+					timeStamp: Date.now(),
+				},
 			]);
 			sendTextHook(text, screenName);
 		}
 	}
 
+	// FILE TRANSFERS
+	function handleFileRequest(request, info) {
+		// info = { sender, size, name }
+		setMessages((messages) => [
+			...messages,
+			{
+				type: "request",
+				dir: "in",
+				request,
+				timeStamp: Date.now(),
+				...info,
+			},
+		]);
+	}
+	function handleFile(arrayBuffer, name, timeStamp) {
+		try {
+			const blob = new Blob([arrayBuffer]);
+			const url = window.URL.createObjectURL(blob);
+			setMessages((messages) => {
+				const index = messages.findIndex((e) => e.timeStamp === timeStamp);
+				const tempMessages = [...messages];
+				tempMessages[index].url = url;
+				return tempMessages;
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	}
 	async function sendFile(file) {
 		const info = {
 			sender: screenName,
 			size: file.size,
 			name: file.name,
 		};
+		setMessages((messages) => [
+			...messages,
+			{ type: "request", dir: "out", timeStamp: Date.now(), ...info },
+		]);
 		await sendFileHook(file, info);
 	}
 

@@ -7,7 +7,7 @@ export function send(channel, arrayBuffer, info) {
 	// chrome does not support blob
 	channel.binaryType = "arraybuffer";
 
-	// fist the info is sent
+	// first the info is sent
 	// the receiver can either accept or refuse the file
 	channel.onopen = () => {
 		channel.send(JSON.stringify(info));
@@ -44,7 +44,7 @@ export function receive(channel, hookMethods) {
 	const receivedBuffers = [];
 	// info = {sender, size, name}
 	let info = null;
-	let timeStamp = null;
+	let timeStamp;
 
 	channel.onmessage = async (message) => {
 		const { data } = message;
@@ -53,17 +53,16 @@ export function receive(channel, hookMethods) {
 			// empty means the beginning
 			if (!info) {
 				info = JSON.parse(data);
-				timeStamp = Date.now();
 				// we need the user's permission to receive the file
 				// newRequest() wraps around promise
 				// resovle() and reject() are passed to the client
 				const request = newRequest();
 				hookMethods.receiveFileRequest(
 					{ accept: request.accept, refuse: request.refuse },
-					{ ...info, timeStamp }
+					info
 				);
 				try {
-					await request.waitForClient();
+					timeStamp = await request.waitForClient();
 				} catch {
 					throw new Error("rejected");
 				}
@@ -86,7 +85,7 @@ export function receive(channel, hookMethods) {
 				}, new Uint8Array());
 				// pass the file to the client and close the channel
 				// the channel is closed on both devices
-				hookMethods.receiveFile(arrayBuffer, info.name);
+				hookMethods.receiveFile(arrayBuffer, info.name, timeStamp);
 				channel.close();
 			}
 		} catch (error) {

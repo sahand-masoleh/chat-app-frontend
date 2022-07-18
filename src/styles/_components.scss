@@ -50,3 +50,16 @@
 	max-width: 70rem;
 	margin: 0 auto;
 }
+
+.button {
+	all: unset;
+	border: none;
+	cursor: pointer;
+	fill: currentColor;
+
+	&__svg {
+		height: 100%;
+		width: 100%;
+		object-fit: contain;
+	}
+}

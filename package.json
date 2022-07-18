@@ -8,6 +8,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"filesize": "^9.0.11",
 		"nanoid": "^4.0.0",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",

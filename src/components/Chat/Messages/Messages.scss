@@ -1,0 +1,136 @@
+@use "../../../styles/vars" as *;
+
+.messages {
+	position: relative;
+	&__wrapper {
+		position: absolute;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		min-height: 100%;
+		gap: 1ch;
+		padding: 1rem;
+	}
+	overflow-y: scroll;
+}
+
+.text-message {
+	&--out {
+		align-self: flex-end;
+	}
+	&--in {
+		align-self: flex-start;
+	}
+
+	&__sender {
+		font-size: $fs-m;
+
+		&--out {
+			text-align: right;
+
+			& + .text-message__content {
+				border-top-right-radius: 0;
+			}
+		}
+
+		&--in {
+			text-align: left;
+
+			// & + .text-message__content {
+			// 	border-top-left-radius: 0;
+			// }
+		}
+	}
+
+	&__content {
+		padding: 1ch;
+		border-radius: 1ch;
+		box-shadow: 0 1ch 1ch #00000005;
+		overflow-wrap: break-word;
+
+		&--out {
+			padding: 1ch;
+			background-color: $c-a;
+			color: $c-w;
+
+			&.text-message__content--neu {
+				border-top-right-radius: 0;
+			}
+		}
+
+		&--in {
+			background-color: $c-w;
+			color: $c-b;
+
+			&.text-message__content--neu {
+				border-top-left-radius: 0;
+			}
+		}
+	}
+}
+
+.file-message {
+	border-radius: 1ch;
+	box-shadow: 0 1ch 1ch #00000005;
+	width: fit-content;
+	display: flex;
+	max-width: 100%;
+	align-items: center;
+	overflow: hidden;
+
+	&--in {
+		background-color: $c-w;
+		color: $c-b;
+	}
+
+	&--refused {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	&__icon {
+		flex-shrink: 0;
+		height: 3rem;
+		width: 3rem;
+		object-fit: cover;
+	}
+
+	&__info {
+		padding: 1ch;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&__name {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&__button-cont {
+		// only appears on incoming requests
+		align-self: stretch;
+		border-radius: 1ch;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+		background-color: $c-l2;
+		display: flex;
+		align-items: center;
+		padding: 0 1ch;
+	}
+
+	&__button {
+		height: 2rem;
+		width: 2rem;
+
+		&--red {
+			color: $c-r;
+		}
+
+		&--green {
+			color: $c-g;
+		}
+	}
+}

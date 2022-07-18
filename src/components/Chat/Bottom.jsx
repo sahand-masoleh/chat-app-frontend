@@ -2,6 +2,7 @@ import "./Bottom.scss";
 import { useState, useContext, useRef } from "react";
 import { ConnectionContext } from "../../contexts/ConnectionContext";
 
+// TODO: aria-label
 import { ReactComponent as SendIcon } from "../../assets/icons/send.svg";
 import { ReactComponent as AttachIcon } from "../../assets/icons/attach.svg";
 
@@ -57,11 +58,8 @@ function Bottom() {
 					ref={textRef}
 					data-textarea
 				></textarea>
-				<button
-					className="bottom__button chat-button"
-					onClick={handleSendMessage}
-				>
-					<SendIcon className="chat-button__svg" />
+				<button className="bottom__button button" onClick={handleSendMessage}>
+					<SendIcon className="button__svg" />
 				</button>
 				{/* FILE */}
 				<input
@@ -70,11 +68,8 @@ function Bottom() {
 					ref={fileRef}
 					onChange={handleSendFile}
 				/>
-				<button
-					className="bottom__button chat-button"
-					onClick={handleChooseFile}
-				>
-					<AttachIcon className="chat-button__svg" />
+				<button className="bottom__button button" onClick={handleChooseFile}>
+					<AttachIcon className="button__svg" />
 				</button>
 			</div>
 		</div>
