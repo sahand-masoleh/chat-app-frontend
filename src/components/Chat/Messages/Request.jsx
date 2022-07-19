@@ -11,7 +11,6 @@ import { ReactComponent as CheckmarkIcon } from "@/assets/icons/checkmark.svg";
 import { ReactComponent as CrossIcon } from "@/assets/icons/cross.svg";
 import { ReactComponent as DocumentIcon } from "@/assets/icons/document.svg";
 import { ReactComponent as SaveIcon } from "@/assets/icons/save.svg";
-console.log(SaveIcon);
 
 function Request({ dir, request, name, size, timeStamp }) {
 	// status = null | refused | [percentage] | ready | failed
@@ -57,49 +56,51 @@ function Request({ dir, request, name, size, timeStamp }) {
 		delete downloadList.current[timeStamp];
 	}
 
-	return (
-		<div className={BEM("file-message", "", dir, status)}>
-			<DocumentIcon className="file-message__icon" title="" />
-			<div className="file-message__info">
-				<p className="file-message__name">{name}</p>
-				<p className="file--message__size">{fileSize(size)}</p>
-			</div>
-			{!status ? (
-				<div className="file-message__button-cont">
-					<button
-						className={`${BEM("file-message", "button", "green")} button`}
-						onClick={handleAccept}
-					>
-						<CheckmarkIcon className="button__svg" title="Accept File" />
-					</button>
-					<button
-						className={`${BEM("file-message", "button", "red")} button`}
-						onClick={handleRefuse}
-					>
-						<CrossIcon className="button__svg" title="Refuse File" />
-					</button>
+	if (dir === "in") {
+		return (
+			<div className={BEM("file-message", "", dir, status)}>
+				<DocumentIcon className="file-message__icon" title="" />
+				<div className="file-message__info">
+					<p className="file-message__name">{name}</p>
+					<p className="file--message__size">{fileSize(size)}</p>
 				</div>
-			) : status === "ready" ? (
-				<div className="file-message__button-cont">
-					<button
-						className={`${BEM("file-message", "button")} button`}
-						onClick={handleDownload}
-					>
-						<SaveIcon className="button__svg" title={"Save File"} />
-					</button>
-				</div>
-			) : typeof status === "number" ? (
-				<div className="file-message__button-cont">
-					<div
-						className="file-message__loading"
-						style={{ "--percentage": status }}
-					>
-						{status.toFixed(2)}%
+				{!status ? (
+					<div className="file-message__button-cont">
+						<button
+							className={`${BEM("file-message", "button", "green")} button`}
+							onClick={handleAccept}
+						>
+							<CheckmarkIcon className="button__svg" title="Accept File" />
+						</button>
+						<button
+							className={`${BEM("file-message", "button", "red")} button`}
+							onClick={handleRefuse}
+						>
+							<CrossIcon className="button__svg" title="Refuse File" />
+						</button>
 					</div>
-				</div>
-			) : null}
-		</div>
-	);
+				) : status === "ready" ? (
+					<div className="file-message__button-cont">
+						<button
+							className={`${BEM("file-message", "button")} button`}
+							onClick={handleDownload}
+						>
+							<SaveIcon className="button__svg" title={"Save File"} />
+						</button>
+					</div>
+				) : typeof status === "number" ? (
+					<div className="file-message__button-cont">
+						<div
+							className="file-message__loading"
+							style={{ "--percentage": status }}
+						>
+							{status.toFixed(2)}%
+						</div>
+					</div>
+				) : null}
+			</div>
+		);
+	}
 }
 
 export default Request;

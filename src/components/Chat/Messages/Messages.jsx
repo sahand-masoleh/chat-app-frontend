@@ -1,7 +1,16 @@
 import "./Messages.scss";
 
-import { useContext, useMemo, useRef, useEffect, useState } from "react";
+import {
+	useContext,
+	useMemo,
+	useRef,
+	useEffect,
+	useState,
+	Fragment,
+} from "react";
 import { ConnectionContext } from "@/contexts/ConnectionContext";
+
+import Linkify from "linkify-react";
 
 import debounce from "@/utils/debounce";
 import BEM from "@/utils/BEM";
@@ -25,46 +34,65 @@ function Messages() {
 		}
 	}, [messages]);
 
-	const messagesMap = () => {
-		let lastSender = "";
-		return messages.map((entry) => {
-			const { type, dir, sender, timeStamp } = entry;
-			// see if the sender of the current message is the same as the last
-			let neu = lastSender === sender ? false : true;
-			lastSender = sender;
+	const messagesMap = () =>
+		useMemo(() => {
+			{
+				let lastSender = "";
+				return messages.map((entry) => {
+					const { type, dir, sender, timeStamp } = entry;
+					// see if the sender of the current message is the same as the last
+					let neu = lastSender === sender ? false : true;
+					lastSender = sender;
 
-			if (type === "text") {
-				const { text } = entry;
-				// TODO: move sender to its own component
-				// TODO: detect links
-				return (
-					<div key={timeStamp} className={BEM("text-message", "", dir)}>
-						{neu && dir === "in" && (
-							<p className={BEM("text-message", "sender", dir)}>{sender}</p>
-						)}
-						<p className={BEM("text-message", "content", dir, neu && "neu")}>
-							{text}
-						</p>
-					</div>
-				);
-			} else if (type === "request") {
-				// TODO: outbound requests
-				if (dir === "in") {
-					const { size, name, request } = entry;
+					const senderComp = () => {
+						if (neu && dir === "in") {
+							return <div className="sender">{sender}</div>;
+						}
+					};
+
+					const messageComp = () => {
+						if (type === "text") {
+							const { text } = entry;
+
+							// TODO: move sender to its own component
+							return (
+								<div className={BEM("text-message", "", dir)}>
+									<p
+										className={BEM(
+											"text-message",
+											"content",
+											dir,
+											neu && "neu"
+										)}
+									>
+										<Linkify options={{ target: "_blank" }}>{text}</Linkify>
+									</p>
+								</div>
+							);
+						} else if (type === "request") {
+							// TODO: outbound requests
+							const { size, name, request } = entry;
+							return (
+								<Request
+									dir={dir}
+									request={request}
+									name={name}
+									size={size}
+									timeStamp={timeStamp}
+								/>
+							);
+						}
+					};
+
 					return (
-						<Request
-							key={timeStamp}
-							dir={dir}
-							request={request}
-							name={name}
-							size={size}
-							timeStamp={timeStamp}
-						/>
+						<Fragment key={timeStamp}>
+							{senderComp()}
+							{messageComp()}
+						</Fragment>
 					);
-				}
+				});
 			}
-		});
-	};
+		}, [messages]);
 
 	function handleScroll() {
 		if (
