@@ -12,6 +12,7 @@
 		"linkify-react": "^3.0.4",
 		"linkifyjs": "^3.0.5",
 		"nanoid": "^4.0.0",
+		"random-word-slugs": "^0.1.6",
 		"react": "^18.0.0",
 		"react-dom": "^18.0.0",
 		"socket.io-client": "^4.5.1",

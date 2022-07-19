@@ -1,51 +1,5 @@
 @use "./vars" as *;
 
-.input-box {
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	gap: 1rem;
-
-	&__title {
-		font-size: $fs-l;
-		font-weight: $fw-3;
-		color: $c-b;
-		margin: 0 auto;
-	}
-
-	&__input {
-		padding: 1ch;
-		font-size: $fs-l;
-		font-weight: $fw-7;
-		color: $c-b;
-		border: none;
-		border-radius: 0.5rem;
-		outline: 0.25rem solid currentColor;
-		background-color: $c-w;
-	}
-}
-
-.wizard-button {
-	overflow-wrap: break-word;
-	hyphens: auto;
-	font-size: $fs-l;
-	font-weight: $fw-3;
-	padding: 1ch 2ch;
-
-	background-color: $c-a;
-	border: none;
-	border-radius: 1rem;
-	color: $c-w;
-	cursor: pointer;
-	outline: 0.5rem solid $c-l2;
-
-	&:disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-	}
-}
-
-// TODO: move this to another partial
 .wrapper {
 	max-width: 70rem;
 	margin: 0 auto;

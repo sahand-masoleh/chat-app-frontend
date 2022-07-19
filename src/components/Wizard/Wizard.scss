@@ -5,4 +5,61 @@
 	justify-content: center;
 	grid-auto-columns: minmax(0, 30rem);
 	gap: 2rem;
+	margin: 0 1rem;
+}
+
+.wizard-button {
+	overflow-wrap: break-word;
+	hyphens: auto;
+	font-size: xx-large;
+	font-weight: 300;
+	padding: 1ch 2ch;
+
+	background-color: $c-a;
+	border: none;
+	border-radius: 1rem;
+	color: $c-w;
+	cursor: pointer;
+	outline: 0.5rem solid $c-l2;
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}
+
+.input-box {
+	display: flex;
+	// flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	position: relative;
+
+	&__title {
+		font-size: xx-large;
+		font-weight: 300;
+		color: $c-b;
+		text-align: center;
+	}
+
+	&__input {
+		flex-basis: 100%;
+		padding: 1ch;
+		min-width: 0;
+		font-size: xx-large;
+		font-weight: 700;
+		color: $c-b;
+		border: none;
+		border-radius: 0.5rem;
+		outline: 0.25rem solid currentColor;
+		background-color: $c-w;
+	}
+
+	&__button {
+		color: $c-b;
+		width: 2rem;
+		height: 2rem;
+	}
 }
