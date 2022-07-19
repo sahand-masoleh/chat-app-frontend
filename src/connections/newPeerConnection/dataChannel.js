@@ -45,6 +45,7 @@ export function receive(channel, hookMethods) {
 	// info = {sender, size, name}
 	let info = null;
 	let timeStamp;
+	let downloaded = 0;
 
 	channel.onmessage = async (message) => {
 		const { data } = message;
@@ -73,6 +74,8 @@ export function receive(channel, hookMethods) {
 			else if (data !== "EOF") {
 				// the file is split into chunks and put into a regular array
 				receivedBuffers.push(data);
+				downloaded += data.byteLength;
+				hookMethods.receiveFile(downloaded, timeStamp);
 			}
 			// this is the 'EOF' signal
 			else {
@@ -85,7 +88,7 @@ export function receive(channel, hookMethods) {
 				}, new Uint8Array());
 				// pass the file to the client and close the channel
 				// the channel is closed on both devices
-				hookMethods.receiveFile(arrayBuffer, info.name, timeStamp);
+				hookMethods.receiveFile("done", timeStamp, arrayBuffer);
 				channel.close();
 			}
 		} catch (error) {

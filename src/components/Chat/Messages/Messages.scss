@@ -1,4 +1,4 @@
-@use "../../../styles/vars" as *;
+@use "@/styles/vars" as *;
 
 .messages {
 	position: relative;
@@ -25,22 +25,6 @@
 
 	&__sender {
 		font-size: $fs-m;
-
-		&--out {
-			text-align: right;
-
-			& + .text-message__content {
-				border-top-right-radius: 0;
-			}
-		}
-
-		&--in {
-			text-align: left;
-
-			// & + .text-message__content {
-			// 	border-top-left-radius: 0;
-			// }
-		}
 	}
 
 	&__content {
@@ -119,6 +103,7 @@
 		display: flex;
 		align-items: center;
 		padding: 0 1ch;
+		position: relative;
 	}
 
 	&__button {
@@ -131,6 +116,25 @@
 
 		&--green {
 			color: $c-g;
+		}
+	}
+
+	&__loading {
+		height: 100%;
+		display: grid;
+		place-items: center;
+		font-size: medium;
+		font-weight: 400;
+
+		&::after {
+			content: "";
+			position: absolute;
+			height: calc(100% - var(--percentage) * 1%);
+			top: 0;
+			left: 0;
+			right: 0;
+			background-color: white;
+			opacity: 0.5;
 		}
 	}
 }

@@ -62,20 +62,12 @@ export function ConnectionProvider({ children }) {
 			},
 		]);
 	}
-	function handleFile(arrayBuffer, name, timeStamp) {
-		try {
-			const blob = new Blob([arrayBuffer]);
+	function handleFile(downloaded, timeStamp, blob) {
+		if (downloaded === "done") {
 			const url = window.URL.createObjectURL(blob);
 			downloadList.current[timeStamp] = url;
-
-			// const a = document.createElement("a");
-			// a.href = url;
-			// a.download = name;
-			// a.click();
-			// window.URL.revokeObjectURL(url);
-			// a.remove();
-		} catch (error) {
-			console.error(error);
+		} else {
+			downloadList.current[timeStamp] = downloaded;
 		}
 	}
 	async function sendFile(file) {

@@ -25,7 +25,7 @@ function Messages() {
 		}
 	}, [messages]);
 
-	const messagesMap = useMemo(() => {
+	const messagesMap = () => {
 		let lastSender = "";
 		return messages.map((entry) => {
 			const { type, dir, sender, timeStamp } = entry;
@@ -64,7 +64,7 @@ function Messages() {
 				}
 			}
 		});
-	}, [messages]);
+	};
 
 	function handleScroll() {
 		if (
@@ -82,7 +82,7 @@ function Messages() {
 			ref={messagesRef}
 			onScroll={debouncedHandleScroll}
 		>
-			<div className="messages__wrapper wrapper">{messagesMap}</div>
+			<div className="messages__wrapper wrapper">{messagesMap()}</div>
 		</div>
 	);
 }

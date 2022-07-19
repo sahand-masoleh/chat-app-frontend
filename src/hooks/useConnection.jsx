@@ -87,13 +87,15 @@ function useConnection(clientMethods) {
 		}
 	}
 
-	function receiveFile(arrayBuffer, name, timeStamp) {
-		try {
-			const blob = new Blob([arrayBuffer]);
-			clientMethods.handleFile(blob, name, timeStamp);
-		} catch (error) {
-			console.error(error);
-		}
+	function receiveFile(downloaded, timeStamp, arrayBuffer) {
+		if (downloaded === "done") {
+			try {
+				const blob = new Blob([arrayBuffer]);
+				clientMethods.handleFile(downloaded, timeStamp, blob);
+			} catch (error) {
+				console.error(error);
+			}
+		} else clientMethods.handleFile(downloaded, timeStamp);
 	}
 
 	return { create, join, leave, room, sendText, sendFile };
