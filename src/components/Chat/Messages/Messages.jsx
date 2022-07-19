@@ -46,7 +46,7 @@ function Messages() {
 
 					const senderComp = () => {
 						if (neu && dir === "in") {
-							return <div className="sender">{sender}</div>;
+							return <div className="sender">{sender}:</div>;
 						}
 					};
 

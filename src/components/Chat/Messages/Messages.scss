@@ -66,6 +66,14 @@
 	&--in {
 		background-color: $c-w;
 		color: $c-b;
+		align-self: flex-start;
+	}
+
+	&--out {
+		background-color: $c-a;
+		color: $c-w;
+		align-self: flex-end;
+		flex-direction: row-reverse;
 	}
 
 	&--refused {
@@ -129,7 +137,9 @@
 		&::after {
 			content: "";
 			position: absolute;
-			height: calc(100% - var(--percentage) * 1%);
+			max-height: calc(100% - var(--percentage) * 1%);
+			height: 100%;
+			transition: max-height 0.1s;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -137,4 +147,13 @@
 			opacity: 0.5;
 		}
 	}
+}
+
+.sender {
+	align-self: flex-start;
+	font-size: large;
+	font-weight: 700;
+	border-radius: 0.5rem;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
 }

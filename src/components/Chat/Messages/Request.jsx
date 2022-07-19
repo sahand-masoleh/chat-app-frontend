@@ -23,6 +23,7 @@ function Request({ dir, request, name, size, timeStamp }) {
 		downloadList.current[timeStamp] = 0;
 		setStatus(0);
 
+		// TODO: ability to cancel
 		let intervalId;
 		const checkStatus = () => downloadList.current[timeStamp];
 		intervalId = setInterval(() => {
@@ -56,15 +57,17 @@ function Request({ dir, request, name, size, timeStamp }) {
 		delete downloadList.current[timeStamp];
 	}
 
-	if (dir === "in") {
-		return (
-			<div className={BEM("file-message", "", dir, status)}>
-				<DocumentIcon className="file-message__icon" title="" />
-				<div className="file-message__info">
-					<p className="file-message__name">{name}</p>
-					<p className="file--message__size">{fileSize(size)}</p>
-				</div>
-				{!status ? (
+	return (
+		<div className={BEM("file-message", "", dir, status)}>
+			<div className={`${BEM("file-message", "icon", dir)} icon`}>
+				<DocumentIcon className="icon__svg" title="" />
+			</div>
+			<div className="file-message__info">
+				<p className="file-message__name">{name}</p>
+				<p className="file--message__size">{fileSize(size)}</p>
+			</div>
+			{dir === "in" &&
+				(!status ? (
 					<div className="file-message__button-cont">
 						<button
 							className={`${BEM("file-message", "button", "green")} button`}
@@ -97,10 +100,9 @@ function Request({ dir, request, name, size, timeStamp }) {
 							{status.toFixed(2)}%
 						</div>
 					</div>
-				) : null}
-			</div>
-		);
-	}
+				) : null)}
+		</div>
+	);
 }
 
 export default Request;

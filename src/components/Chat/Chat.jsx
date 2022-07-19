@@ -23,7 +23,7 @@ function Top() {
 		<div className="top">
 			<div className="top__wrapper wrapper">
 				<h2 className="top__room">{room}</h2>
-				<h3 className="top__name">{screenName}</h3>
+				<h3 className="top__name">@{screenName}</h3>
 			</div>
 		</div>
 	);
