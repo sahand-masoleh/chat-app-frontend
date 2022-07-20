@@ -6,6 +6,24 @@
 	grid-auto-columns: minmax(0, 30rem);
 	gap: 2rem;
 	margin: 0 1rem;
+
+	&__icon {
+		height: 2rem;
+		width: 2rem;
+		color: $c-w;
+
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		from {
+			transform: rotate(0);
+		}
+
+		to {
+			transform: rotate(360deg);
+		}
+	}
 }
 
 .wizard-button {

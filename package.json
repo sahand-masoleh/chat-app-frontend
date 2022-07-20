@@ -5,7 +5,8 @@
 	"scripts": {
 		"dev": "vite --host",
 		"build": "vite build",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"deploy": "gh-pages -d dist"
 	},
 	"dependencies": {
 		"filesize": "^9.0.11",
@@ -24,5 +25,6 @@
 		"@vitejs/plugin-react": "^1.3.0",
 		"sass": "^1.53.0",
 		"vite": "^2.9.9"
-	}
+	},
+	"homepage": "https://sahand-masoleh.github.io/chat-app-frontend"
 }

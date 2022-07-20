@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ConnectionContext } from "../../contexts/ConnectionContext";
 
 var MAX_LENGTH = 8;
@@ -8,21 +8,32 @@ function JoinRoom({ back }) {
 	const [isValid, setIsValid] = useState(false);
 	const { join } = useContext(ConnectionContext);
 
-	function handleInput(event) {
-		const { value } = event.target;
-		setInput(value.toUpperCase());
+	useEffect(() => {
+		let storedRoom = window.localStorage.getItem("room");
+		if (storedRoom) {
+			setInput(storedRoom);
+		}
+	}, []);
+
+	useEffect(() => {
 		const regex = new RegExp(`^[a-z0-9]{${MAX_LENGTH}}$`, "i");
-		if (regex.test(value)) {
+		if (regex.test(input)) {
 			setIsValid(true);
 		} else {
 			setIsValid(false);
 		}
+	}, [input]);
+
+	function handleInput(event) {
+		const { value } = event.target;
+		setInput(value.toUpperCase());
 	}
 
 	function handleJoin() {
 		if (isValid) {
 			join(input);
 		}
+		window.localStorage.setItem("room", input);
 	}
 
 	return (

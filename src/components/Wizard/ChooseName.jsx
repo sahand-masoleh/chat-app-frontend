@@ -5,6 +5,9 @@ import { generateSlug } from "random-word-slugs";
 
 import { ReactComponent as RetryIcon } from "../../assets/icons/retry.svg";
 
+var MAX_LENGTH = 16;
+var MIN_LENGTH = 3;
+
 function ChooseName({ back }) {
 	const [input, setInput] = useState("");
 	const [isValid, setIsValid] = useState(false);
@@ -20,7 +23,8 @@ function ChooseName({ back }) {
 	}, []);
 
 	useEffect(() => {
-		if (/^[a-z0-9\s]{3,16}$/i.test(input)) {
+		const regex = new RegExp(`^[a-z0-9\\s]{${MIN_LENGTH},${MAX_LENGTH}}$`, "i");
+		if (regex.test(input)) {
 			setIsValid(true);
 		} else setIsValid(false);
 	}, [input]);

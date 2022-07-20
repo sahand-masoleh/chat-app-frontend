@@ -24,8 +24,14 @@
 #root {
 	// TODO: fix height on mobile
 	background-color: $c-l1;
-	min-height: 100vh;
+	// min-height: 100vh;
+	min-height: 100%;
 	display: grid;
 	place-items: center;
 	grid-auto-columns: minmax(0, 1fr);
+}
+
+html,
+body {
+	height: 100%;
 }
