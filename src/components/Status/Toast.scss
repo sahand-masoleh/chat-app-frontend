@@ -1,0 +1,44 @@
+@use "@/styles/vars" as *;
+
+.toast {
+	position: absolute;
+	top: 1rem;
+	left: 1rem;
+	right: 1rem;
+
+	background-color: $c-w;
+	border-radius: 0.5rem;
+	padding: 1ch;
+	box-shadow: 0 0.5rem 0.5rem #00000020;
+
+	color: $c-b;
+	font-size: xx-large;
+	font-weight: 300;
+
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+
+	&::before {
+		position: absolute;
+		content: "";
+		background-color: $c-a;
+		left: 0;
+		bottom: 0;
+		height: 0.25rem;
+		width: 100%;
+
+		animation: timeout forwards linear 5s;
+	}
+
+	@keyframes timeout {
+		100% {
+			width: 0;
+		}
+	}
+
+	&__icon {
+		width: 2ch;
+		color: red;
+	}
+}

@@ -80,7 +80,8 @@ export function ConnectionProvider({ children }) {
 			...messages,
 			{ type: "request", dir: "out", timeStamp: Date.now(), ...info },
 		]);
-		await sendFileHook(file, info);
+
+		sendFileHook(file, info);
 	}
 
 	return (

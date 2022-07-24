@@ -2,7 +2,6 @@ import "./Bottom.scss";
 import { useState, useContext, useRef } from "react";
 import { ConnectionContext } from "../../contexts/ConnectionContext";
 
-// TODO: aria-label
 import { ReactComponent as SendIcon } from "../../assets/icons/send.svg";
 import { ReactComponent as AttachIcon } from "../../assets/icons/attach.svg";
 

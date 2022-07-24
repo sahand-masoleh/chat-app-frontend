@@ -1,24 +1,30 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { customAlphabet } from "nanoid";
 
 import newPeerConnection from "../connections/newPeerConnection";
 import newSocketConnection from "../connections/newSocketConnection";
+import { StatusContext } from "../contexts/StatusContext";
 
 function useConnection(clientMethods) {
+	const { setIsLoading, setError } = useContext(StatusContext);
 	const [room, setRoom] = useState(null);
-	const socket = useRef(newSocketConnection([getOffer, getAnswer, addAnswer]));
+	const socket = useRef(
+		newSocketConnection({ getOffer, getAnswer, addAnswer, setError })
+	);
 	const peers = useRef({});
 
 	const hookMethods = {
 		receiveText: clientMethods.handleText,
 		receiveFile,
 		receiveFileRequest: clientMethods.handleFileRequest,
+		setError,
 		// receiveImage,
 		// receiveVoice
 	};
 
 	// HOST
 	async function create() {
+		setIsLoading(true);
 		try {
 			const nanoid = customAlphabet(
 				// "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
@@ -28,13 +34,16 @@ function useConnection(clientMethods) {
 			await socket.current.createRoom(nanoid);
 			setRoom(nanoid);
 		} catch (error) {
-			console.error(error);
+			setError(error);
 		}
+		setIsLoading(false);
 	}
 
+	// TODO: change name
 	async function getOffer(guestId) {
 		// add new user to the collection of users
-		peers.current[guestId] = newPeerConnection(hookMethods);
+		peers.current[guestId] = await newPeerConnection(hookMethods);
+		// TODO: try catch
 		const offer = await peers.current[guestId].getOffer();
 		socket.current.sendOffer(guestId, offer);
 	}
@@ -45,21 +54,28 @@ function useConnection(clientMethods) {
 
 	// GUEST
 	async function join(input) {
+		setIsLoading(true);
 		try {
 			let users = await socket.current.joinRoom(input);
 			// create a collection of already connected users
 			for (let user of users) {
-				peers.current[user] = newPeerConnection(hookMethods);
+				peers.current[user] = await newPeerConnection(hookMethods);
 			}
 			setRoom(input);
 		} catch (error) {
-			console.error(error);
+			setError(error);
 		}
+		setIsLoading(false);
 	}
 
+	// TODO: change name
 	async function getAnswer(hostId, offer) {
-		const answer = await peers.current[hostId].getAnswer(offer);
-		socket.current.sendAnswer(hostId, answer);
+		try {
+			const answer = await peers.current[hostId].getAnswer(offer);
+			socket.current.sendAnswer(hostId, answer);
+		} catch (error) {
+			setError("unable to connect to new peer");
+		}
 	}
 
 	// ALL
@@ -84,6 +100,7 @@ function useConnection(clientMethods) {
 			}
 		} catch (error) {
 			console.error(error);
+			setError("could not read the file");
 		}
 	}
 
@@ -94,6 +111,7 @@ function useConnection(clientMethods) {
 				clientMethods.handleFile(downloaded, timeStamp, blob);
 			} catch (error) {
 				console.error(error);
+				setError("file corrupted");
 			}
 		} else clientMethods.handleFile(downloaded, timeStamp);
 	}

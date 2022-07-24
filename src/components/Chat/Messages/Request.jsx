@@ -6,7 +6,6 @@ import fileSize from "filesize";
 
 import BEM from "@/utils/BEM";
 
-// TODO: aria-label
 import { ReactComponent as CheckmarkIcon } from "@/assets/icons/checkmark.svg";
 import { ReactComponent as CrossIcon } from "@/assets/icons/cross.svg";
 import { ReactComponent as DocumentIcon } from "@/assets/icons/document.svg";

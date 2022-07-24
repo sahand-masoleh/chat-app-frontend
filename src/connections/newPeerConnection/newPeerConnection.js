@@ -1,7 +1,7 @@
 import * as dataChannel from "./dataChannel";
 import setupTextChannel from "./setupTextChannel";
 
-var iceServers = {
+const iceServers = {
 	iceServers: [
 		{
 			urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
@@ -9,8 +9,22 @@ var iceServers = {
 	],
 };
 
-function newPeerConnection(hookMethods) {
+async function newPeerConnection(hookMethods) {
 	let peerConnection = new RTCPeerConnection(iceServers);
+
+	//TODO: handle connection events
+	// peerConnection.onicecandidateerror = (error) => {
+	// 	console.error(error);
+	// 	hookMethods.setError();
+	// };
+	// peerConnection.onconnectionstatechange = (e) =>
+	// 	console.log({ connectionState: e.target.connectionState });
+	// peerConnection.oniceconnectionstatechange = (e) =>
+	// 	console.log({ iceConnectionState: e.target.iceConnectionState });
+	// peerConnection.onicegatheringstatechange = (e) =>
+	// 	console.log({ iceGatheringState: e.target.iceGatheringState });
+	// peerConnection.onsignalingstatechange = (e) =>
+	// 	console.log({ signalingState: e.target.signalingState });
 
 	/** CONNECTION EVENTS & FUNCTIONS */
 

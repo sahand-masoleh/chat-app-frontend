@@ -3,7 +3,10 @@ function setupTextChannel(channel, hookMethods) {
 
 	// events
 	{
-		channel.onerror = (error) => console.error(error);
+		channel.onerror = (error) => {
+			console.error(error);
+			hookMethods.setError();
+		};
 		channel.onmessage = (message) => {
 			const { text, sender } = JSON.parse(message.data);
 			hookMethods.receiveText(text, sender);

@@ -54,7 +54,6 @@ function Messages() {
 						if (type === "text") {
 							const { text } = entry;
 
-							// TODO: move sender to its own component
 							return (
 								<div className={BEM("text-message", "", dir)}>
 									<p
@@ -70,7 +69,6 @@ function Messages() {
 								</div>
 							);
 						} else if (type === "request") {
-							// TODO: outbound requests
 							const { size, name, request } = entry;
 							return (
 								<Request

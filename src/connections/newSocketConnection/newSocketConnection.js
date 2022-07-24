@@ -1,29 +1,28 @@
 import { io } from "socket.io-client";
 
-// var socketioServer = "localhost:4000";
 var socketioServer = "https://chat-app-signaling-server.herokuapp.com/";
 
-function newSocketConnection([getOffer, getAnswer, addAnswer]) {
+function newSocketConnection({ getOffer, getAnswer, addAnswer, setError }) {
 	let socket = null;
 
 	function connect() {
 		return new Promise((resolve, reject) => {
 			// skip if a connection already exists
 			if (socket) {
-				// TODO: error message
-				reject();
-				return;
+				reject("connection to socket already exist");
 			}
 
 			// establish a new connection
 			socket = io(socketioServer, {
-				reconnectionAttempts: 3,
+				reconnectionAttempts: 1,
 			});
 
 			// generic events
 			{
-				socket.on("error", (error) => console.log(error));
-				socket.on("message", (message) => console.log(message));
+				socket.on("error", (error) => {
+					console.error(error);
+					setError();
+				});
 			}
 
 			// sdp-related events
@@ -47,8 +46,8 @@ function newSocketConnection([getOffer, getAnswer, addAnswer]) {
 
 			// connection events
 			{
-				socket.on("connect_error", (error) => {
-					reject(error);
+				socket.io.on("reconnect_failed", () => {
+					reject();
 				});
 
 				socket.on("connect", () => {
@@ -61,11 +60,7 @@ function newSocketConnection([getOffer, getAnswer, addAnswer]) {
 	// HOST: create a connection and send a create-room event to the server
 	async function createRoom(room) {
 		if (!socket) {
-			try {
-				await connect();
-			} catch (error) {
-				console.error(error);
-			}
+			await connect();
 		}
 		socket.emit("create-room", room);
 	}
@@ -78,7 +73,7 @@ function newSocketConnection([getOffer, getAnswer, addAnswer]) {
 				try {
 					await connect();
 				} catch (error) {
-					console.error(error);
+					reject(error);
 				}
 			}
 			socket.emit("join-room", room, (res) => {

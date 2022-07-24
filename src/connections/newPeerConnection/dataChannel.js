@@ -65,8 +65,9 @@ export function receive(channel, hookMethods) {
 				try {
 					timeStamp = await request.waitForClient();
 				} catch {
-					throw new Error("rejected");
+					return;
 				}
+				console.log("still accepted");
 				channel.send("ACCEPT");
 			}
 			// 'EOF' is the last packet sent
@@ -93,7 +94,6 @@ export function receive(channel, hookMethods) {
 			}
 		} catch (error) {
 			channel.close();
-			console.error(error);
 		}
 	};
 
