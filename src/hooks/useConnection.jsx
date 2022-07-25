@@ -1,9 +1,9 @@
 import { useState, useRef, useContext } from "react";
 import { customAlphabet } from "nanoid";
 
-import newPeerConnection from "../connections/newPeerConnection";
-import newSocketConnection from "../connections/newSocketConnection";
-import { StatusContext } from "../contexts/StatusContext";
+import newPeerConnection from "@/connections/newPeerConnection";
+import newSocketConnection from "@/connections/newSocketConnection";
+import { StatusContext } from "@/contexts/StatusContext";
 
 function useConnection(clientMethods) {
 	const { setIsLoading, setError } = useContext(StatusContext);
@@ -41,11 +41,15 @@ function useConnection(clientMethods) {
 
 	// TODO: change name
 	async function getOffer(guestId) {
-		// add new user to the collection of users
-		peers.current[guestId] = await newPeerConnection(hookMethods);
-		// TODO: try catch
-		const offer = await peers.current[guestId].getOffer();
-		socket.current.sendOffer(guestId, offer);
+		try {
+			// add new user to the collection of users
+			peers.current[guestId] = await newPeerConnection(hookMethods);
+			// TODO: try catch
+			const offer = await peers.current[guestId].getOffer();
+			socket.current.sendOffer(guestId, offer);
+		} catch (error) {
+			setError(error);
+		}
 	}
 
 	function addAnswer(guestId, answer) {

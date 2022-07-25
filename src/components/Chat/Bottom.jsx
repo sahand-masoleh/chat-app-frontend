@@ -1,9 +1,9 @@
 import "./Bottom.scss";
 import { useState, useContext, useRef } from "react";
-import { ConnectionContext } from "../../contexts/ConnectionContext";
+import { ConnectionContext } from "@/contexts/ConnectionContext";
 
-import { ReactComponent as SendIcon } from "../../assets/icons/send.svg";
-import { ReactComponent as AttachIcon } from "../../assets/icons/attach.svg";
+import { ReactComponent as SendIcon } from "@/assets/icons/send.svg";
+import { ReactComponent as AttachIcon } from "@/assets/icons/attach.svg";
 
 function Bottom() {
 	const { sendText, sendFile } = useContext(ConnectionContext);
@@ -12,6 +12,7 @@ function Bottom() {
 	const fileRef = useRef();
 
 	function handleInputChange(event) {
+		event.preventDefault();
 		const { value } = event.target;
 		setInput(value);
 	}

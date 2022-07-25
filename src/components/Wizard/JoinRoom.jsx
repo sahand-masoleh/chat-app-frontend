@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect } from "react";
-import { ConnectionContext } from "../../contexts/ConnectionContext";
+import { useState, useContext, useEffect, useRef } from "react";
+import { ConnectionContext } from "@/contexts/ConnectionContext";
 
 var MAX_LENGTH = 8;
 
@@ -7,12 +7,14 @@ function JoinRoom({ back }) {
 	const [input, setInput] = useState("");
 	const [isValid, setIsValid] = useState(false);
 	const { join } = useContext(ConnectionContext);
+	const inputRef = useRef();
 
 	useEffect(() => {
 		let storedRoom = window.localStorage.getItem("room");
 		if (storedRoom) {
 			setInput(storedRoom);
 		}
+		inputRef.current.focus();
 	}, []);
 
 	useEffect(() => {
@@ -36,6 +38,15 @@ function JoinRoom({ back }) {
 		window.localStorage.setItem("room", input);
 	}
 
+	// TODO: extract to a hook
+	function handleKeyDown(event) {
+		if (event.key === "Enter" && document.activeElement.dataset.input) {
+			event.preventDefault();
+			event.stopPropagation();
+			handleJoin();
+		}
+	}
+
 	return (
 		<>
 			<div className="input-box">
@@ -49,6 +60,9 @@ function JoinRoom({ back }) {
 					value={input}
 					onChange={handleInput}
 					maxLength={MAX_LENGTH}
+					onKeyDown={handleKeyDown}
+					data-input
+					ref={inputRef}
 				/>
 			</div>
 			<button

@@ -1,7 +1,7 @@
 @use "@/styles/vars" as *;
 
 .bottom {
-	background-color: $c-l2;
+	background-color: $c-sec;
 	padding: 2ch;
 	max-height: 10rem;
 
@@ -12,10 +12,12 @@
 	}
 
 	&__textarea {
+		background-color: $c-wht;
+		color: $c-blc;
 		flex-grow: 1;
 		min-width: 0;
 		resize: none;
-		font-size: $fs-s;
+		font-size: large;
 		padding: 1ch;
 		border: none;
 		border-radius: 0.25rem;
@@ -39,5 +41,6 @@
 		height: 2rem;
 		width: 2rem;
 		flex-shrink: 0;
+		color: $c-wht;
 	}
 }

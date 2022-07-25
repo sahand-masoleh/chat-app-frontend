@@ -42,7 +42,8 @@ async function newPeerConnection(hookMethods) {
 					}
 				};
 			} catch (error) {
-				reject(error);
+				console.error(error);
+				reject();
 			}
 		});
 	}

@@ -6,12 +6,12 @@
 	left: 1rem;
 	right: 1rem;
 
-	background-color: $c-w;
+	background-color: $c-wht;
 	border-radius: 0.5rem;
 	padding: 1ch;
-	box-shadow: 0 0.5rem 0.5rem #00000020;
+	box-shadow: 0 0.5rem 0.5rem $c-blc-t;
 
-	color: $c-b;
+	color: $c-blc;
 	font-size: xx-large;
 	font-weight: 300;
 
@@ -22,7 +22,7 @@
 	&::before {
 		position: absolute;
 		content: "";
-		background-color: $c-a;
+		background-color: $c-red;
 		left: 0;
 		bottom: 0;
 		height: 0.25rem;
@@ -39,6 +39,6 @@
 
 	&__icon {
 		width: 2ch;
-		color: red;
+		color: $c-red;
 	}
 }

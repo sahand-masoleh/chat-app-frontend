@@ -7,16 +7,15 @@
 	left: 0;
 	right: 0;
 	z-index: 100;
-	background-color: #00000050;
+	background-color: $c-blc-t;
 
 	display: grid;
 	place-items: center;
-	color: $c-w;
 
 	&__circle {
 		height: 5rem;
 		aspect-ratio: 1;
-		color: $c-w;
+		color: $c-wht;
 		border-radius: 50%;
 		border: 0.5rem solid currentColor;
 		border-bottom: 0.5rem solid transparent;

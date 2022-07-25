@@ -69,13 +69,13 @@ function Request({ dir, request, name, size, timeStamp }) {
 				(!status ? (
 					<div className="file-message__button-cont">
 						<button
-							className={`${BEM("file-message", "button", "green")} button`}
+							className="file-message__button button"
 							onClick={handleAccept}
 						>
 							<CheckmarkIcon className="button__svg" title="Accept File" />
 						</button>
 						<button
-							className={`${BEM("file-message", "button", "red")} button`}
+							className="file-message__button button"
 							onClick={handleRefuse}
 						>
 							<CrossIcon className="button__svg" title="Refuse File" />
@@ -84,7 +84,7 @@ function Request({ dir, request, name, size, timeStamp }) {
 				) : status === "ready" ? (
 					<div className="file-message__button-cont">
 						<button
-							className={`${BEM("file-message", "button")} button`}
+							className="file-message__button button"
 							onClick={handleDownload}
 						>
 							<SaveIcon className="button__svg" title={"Save File"} />

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import useConnection from "../hooks/useConnection";
+import useConnection from "@/hooks/useConnection";
 
 export const ConnectionContext = createContext();
 

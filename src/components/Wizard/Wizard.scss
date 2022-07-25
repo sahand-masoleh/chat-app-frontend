@@ -1,4 +1,5 @@
-@use "../../styles/vars" as *;
+@use "@/styles/vars" as *;
+@use "sass:color";
 
 .wizard {
 	display: grid;
@@ -15,12 +16,13 @@
 	font-weight: 300;
 	padding: 1ch 2ch;
 
-	background-color: $c-a;
+	background-color: $c-prm;
+	color: $c-wht;
 	border: none;
 	border-radius: 1rem;
-	color: $c-w;
+	outline: 0.25rem solid color.adjust($c-prm, $alpha: -0.75);
+
 	cursor: pointer;
-	outline: 0.5rem solid $c-l2;
 
 	&:disabled {
 		opacity: 0.5;
@@ -30,7 +32,6 @@
 
 .input-box {
 	display: flex;
-	// flex-direction: column;
 	flex-wrap: wrap;
 	justify-content: center;
 	align-items: center;
@@ -40,7 +41,7 @@
 	&__title {
 		font-size: xx-large;
 		font-weight: 300;
-		color: $c-b;
+		color: $c-blc;
 		text-align: center;
 	}
 
@@ -50,15 +51,15 @@
 		min-width: 0;
 		font-size: xx-large;
 		font-weight: 700;
-		color: $c-b;
+		color: $c-blc;
 		border: none;
 		border-radius: 0.5rem;
 		outline: 0.25rem solid currentColor;
-		background-color: $c-w;
+		background-color: $c-wht;
 	}
 
 	&__button {
-		color: $c-b;
+		color: $c-sec;
 		width: 2rem;
 		height: 2rem;
 	}

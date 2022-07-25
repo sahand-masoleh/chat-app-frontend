@@ -17,4 +17,14 @@
 		width: 100%;
 		object-fit: contain;
 	}
+
+	&--spin {
+		animation: spin forwards linear 0.25s;
+	}
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
 }

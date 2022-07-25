@@ -10,7 +10,13 @@
 }
 
 .top {
-	background-color: $c-l2;
+	background-color: $c-sec;
+	color: $c-wht;
+
+	&__name {
+		font-weight: 300;
+	}
+
 	height: 5rem;
 
 	&__wrapper {
