@@ -5,7 +5,9 @@ import { ReactComponent as WarningIcon } from "@/assets/icons/warning.svg";
 function Toast({ message }) {
 	return (
 		<div className="toast">
-			<WarningIcon className="toast__icon" title="" />
+			<div className="toast__icon icon">
+				<WarningIcon className="icon__svg" title="" />
+			</div>
 			{message}
 		</div>
 	);

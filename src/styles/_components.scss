@@ -11,6 +11,8 @@
 	border: none;
 	cursor: pointer;
 	fill: currentColor;
+	display: grid;
+	place-items: center;
 
 	&__svg {
 		height: 100%;

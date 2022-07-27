@@ -7,7 +7,7 @@ export function ConnectionProvider({ children }) {
 	const {
 		create,
 		join,
-		leave,
+		leave: leaveHook,
 		room,
 		sendText: sendTextHook,
 		sendFile: sendFileHook,
@@ -22,7 +22,11 @@ export function ConnectionProvider({ children }) {
 	const downloadList = useRef({});
 
 	useEffect(() => {
-		if (room && screenName) setIsReady(true);
+		if (room && screenName) {
+			setIsReady(true);
+		} else {
+			setIsReady(false);
+		}
 	}, [room, screenName]);
 
 	// TEXT MESSAGES
@@ -84,6 +88,11 @@ export function ConnectionProvider({ children }) {
 		sendFileHook(file, info);
 	}
 
+	function leave() {
+		leaveHook();
+		setScreenName("");
+	}
+
 	return (
 		<ConnectionContext.Provider
 			value={{
@@ -91,12 +100,12 @@ export function ConnectionProvider({ children }) {
 				room,
 				join,
 				create,
-				leave,
-				sendFile,
 				// added in the context
 				sendText,
+				sendFile,
 				screenName,
 				setScreenName,
+				leave,
 				isReady,
 				messages,
 				downloadList,
