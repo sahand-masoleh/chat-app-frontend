@@ -3,7 +3,6 @@
 .top {
 	background-color: $c-sec;
 	color: $c-sec-txt;
-	position: relative;
 	user-select: none;
 
 	&__wrapper {
@@ -11,7 +10,7 @@
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		place-items: center;
-		// padding: 1ch;
+		position: relative;
 	}
 
 	&__room {
@@ -25,5 +24,16 @@
 		height: 2rem;
 		aspect-ratio: 1;
 		margin-left: 1ch;
+		z-index: 100;
 	}
+}
+
+.menu-backdrop {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: transparent;
+	z-index: 99;
 }

@@ -20,6 +20,10 @@ function Top() {
 		setIsOpen((prev) => !prev);
 	}
 
+	function clickAway(event) {
+		setIsOpen(false);
+	}
+
 	return (
 		<div className="top">
 			<div className="top__wrapper wrapper">
@@ -31,8 +35,13 @@ function Top() {
 					)}
 				</button>
 				<h2 className="top__room"># {room && roomWithSpace(room)}</h2>
+				{isOpen && (
+					<>
+						<div className="menu-backdrop" onClick={clickAway}></div>
+						<Menu screenName={screenName} />
+					</>
+				)}
 			</div>
-			{isOpen && <Menu screenName={screenName} />}
 		</div>
 	);
 }
