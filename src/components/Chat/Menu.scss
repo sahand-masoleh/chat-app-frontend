@@ -13,6 +13,7 @@
 	box-shadow: $drop-shadow;
 	margin: 1ch;
 	z-index: 100;
+	gap: 1ch;
 
 	&__item {
 		all: unset;
@@ -26,7 +27,7 @@
 		width: 100%;
 		border: none;
 		border-top: 1px solid $c-trn;
-		margin: 2ch 0;
+		margin: 1ch 0;
 	}
 
 	&__name {

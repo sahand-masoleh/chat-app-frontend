@@ -23,13 +23,17 @@ function Menu({ screenName }) {
 
 			<hr className="menu__divider" />
 
+			<p className="menu__title">Theme:</p>
 			<div className="menu__theme" onClick={changeTheme}>
-				<button className="menu__button button">
-					<DarkIcon className="button__svg" title="Dark Mode" />
-				</button>
-				<button className="menu__button  button">
-					<LightIcon className="button__svg" title="Light Mode" />
-				</button>
+				{!isDark ? (
+					<button className="menu__button button">
+						<DarkIcon className="button__svg" title="Dark Mode" />
+					</button>
+				) : (
+					<button className="menu__button  button">
+						<LightIcon className="button__svg" title="Light Mode" />
+					</button>
+				)}
 			</div>
 
 			<hr className="menu__divider" />

@@ -30,7 +30,7 @@ function Top() {
 						<CloseIcon className="button__svg" title="Menu Button" />
 					)}
 				</button>
-				<h2 className="top__room">{room && roomWithSpace(room)}</h2>
+				<h2 className="top__room"># {room && roomWithSpace(room)}</h2>
 			</div>
 			{isOpen && <Menu screenName={screenName} />}
 		</div>
