@@ -9,7 +9,8 @@ export const light = {
 	"--c-tri-txt": "#151f30",
 
 	"--c-neut": "#f5dfbb",
-	"--c-trn": "#00000010",
+	"--c-trn": "#00000020",
+	"--c-backdrop": "#00000050",
 };
 
 export const dark = {
@@ -24,4 +25,5 @@ export const dark = {
 
 	"--c-neut": "#343740",
 	"--c-trn": " transparent",
+	"--c-backdrop": "#ffffff50",
 };
