@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 /deploy.sh
+/src/assets/icons/unused/
+/README.md

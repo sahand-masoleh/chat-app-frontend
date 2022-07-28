@@ -16,6 +16,7 @@
 	&__room {
 		font-weight: 700;
 		grid-column: 2/3;
+		cursor: pointer;
 	}
 
 	&__button {
@@ -25,6 +26,52 @@
 		aspect-ratio: 1;
 		margin-left: 1ch;
 		z-index: 100;
+	}
+
+	&__info {
+		position: absolute;
+		top: 100%;
+		text-align: center;
+		background-color: $c-tri;
+		color: $c-tri-txt;
+		font-size: x-large;
+		font-weight: 300;
+		padding: 1ch;
+		margin: 1ch;
+		border-radius: 0.5rem;
+		animation: appear forwards 5s;
+		box-shadow: $drop-shadow;
+
+		@keyframes appear {
+			from {
+				opacity: 0;
+			}
+
+			10% {
+				opacity: 1;
+			}
+
+			90% {
+				opacity: 1;
+			}
+
+			to {
+				opacity: 0;
+			}
+		}
+
+		&::before {
+			content: "";
+			position: absolute;
+			bottom: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			height: 1ch;
+			width: 1ch;
+			border-top: none;
+			border: 1ch solid transparent;
+			border-bottom: 1ch solid $c-tri;
+		}
 	}
 }
 

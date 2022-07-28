@@ -10,6 +10,7 @@ import Menu from "./Menu";
 function Top() {
 	const { room, screenName } = useContext(ConnectionContext);
 	const [isOpen, setIsOpen] = useState(false);
+	const [infoShown, setInfoShown] = useState(false);
 
 	function roomWithSpace(num) {
 		const regex = /(\w\w?)/g;
@@ -20,7 +21,7 @@ function Top() {
 		setIsOpen((prev) => !prev);
 	}
 
-	function clickAway(event) {
+	function clickAway() {
 		setIsOpen(false);
 	}
 
@@ -34,7 +35,14 @@ function Top() {
 						<CloseIcon className="button__svg" title="Menu Button" />
 					)}
 				</button>
-				<h2 className="top__room"># {room && roomWithSpace(room)}</h2>
+				<h2 className="top__room" onClick={() => setInfoShown(true)}>
+					# {room && roomWithSpace(room)}
+				</h2>
+				{infoShown && (
+					<p className="top__info" onAnimationEnd={() => setInfoShown(false)}>
+						share the room number above with your peers and start chatting!
+					</p>
+				)}
 				{isOpen && (
 					<>
 						<div className="menu-backdrop" onClick={clickAway}></div>

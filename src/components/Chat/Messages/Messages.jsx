@@ -34,63 +34,57 @@ function Messages() {
 		}
 	}, [messages]);
 
-	const messagesMap = () =>
-		useMemo(() => {
-			{
-				let lastSender = "";
-				return messages.map((entry) => {
-					const { type, dir, sender, timeStamp } = entry;
-					// see if the sender of the current message is the same as the last
-					let neu = lastSender === sender ? false : true;
-					lastSender = sender;
+	const messagesMap = useMemo(() => {
+		{
+			let lastSender = "";
+			return messages.map((entry) => {
+				const { type, dir, sender, timeStamp } = entry;
+				// see if the sender of the current message is the same as the last
+				let neu = lastSender === sender ? false : true;
+				lastSender = sender;
 
-					const senderComp = () => {
-						if (neu && dir === "in") {
-							return <div className="sender">{sender}:</div>;
-						}
-					};
+				const senderComp = () => {
+					if (neu && dir === "in") {
+						return <div className="sender">{sender}:</div>;
+					}
+				};
 
-					const messageComp = () => {
-						if (type === "text") {
-							const { text } = entry;
+				const messageComp = () => {
+					if (type === "text") {
+						const { text } = entry;
 
-							return (
-								<div className={BEM("text-message", "", dir)}>
-									<p
-										className={BEM(
-											"text-message",
-											"content",
-											dir,
-											neu && "neu"
-										)}
-									>
-										<Linkify options={{ target: "_blank" }}>{text}</Linkify>
-									</p>
-								</div>
-							);
-						} else if (type === "request") {
-							const { size, name, request } = entry;
-							return (
-								<Request
-									dir={dir}
-									request={request}
-									name={name}
-									size={size}
-									timeStamp={timeStamp}
-								/>
-							);
-						}
-					};
+						return (
+							<div className={BEM("text-message", "", dir)}>
+								<p
+									className={BEM("text-message", "content", dir, neu && "neu")}
+								>
+									<Linkify options={{ target: "_blank" }}>{text}</Linkify>
+								</p>
+							</div>
+						);
+					} else if (type === "request") {
+						const { size, name, request } = entry;
+						return (
+							<Request
+								dir={dir}
+								request={request}
+								name={name}
+								size={size}
+								timeStamp={timeStamp}
+							/>
+						);
+					}
+				};
 
-					return (
-						<Fragment key={timeStamp}>
-							{senderComp()}
-							{messageComp()}
-						</Fragment>
-					);
-				});
-			}
-		}, [messages]);
+				return (
+					<Fragment key={timeStamp}>
+						{senderComp()}
+						{messageComp()}
+					</Fragment>
+				);
+			});
+		}
+	}, [messages]);
 
 	function handleScroll() {
 		if (
@@ -108,7 +102,7 @@ function Messages() {
 			ref={messagesRef}
 			onScroll={debouncedHandleScroll}
 		>
-			<div className="messages__wrapper wrapper">{messagesMap()}</div>
+			<div className="messages__wrapper wrapper">{messagesMap}</div>
 		</div>
 	);
 }
