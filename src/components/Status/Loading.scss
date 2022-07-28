@@ -7,7 +7,7 @@
 	left: 0;
 	right: 0;
 	z-index: 100;
-	background-color: $c-blc-t;
+	background-color: $c-trn;
 
 	display: grid;
 	place-items: center;
@@ -15,7 +15,7 @@
 	&__circle {
 		height: 5rem;
 		aspect-ratio: 1;
-		color: $c-wht;
+		color: $c-tri;
 		border-radius: 50%;
 		border: 0.5rem solid currentColor;
 		border-bottom: 0.5rem solid transparent;

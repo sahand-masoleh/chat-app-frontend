@@ -6,7 +6,7 @@ import { ConnectionContext } from "./contexts/ConnectionContext";
 
 function App() {
 	const { isReady } = useContext(ConnectionContext);
-	return <>{!isReady ? <Wizard /> : <Chat />}</>;
+	return <div className="app">{!isReady ? <Wizard /> : <Chat />}</div>;
 }
 
 export default App;

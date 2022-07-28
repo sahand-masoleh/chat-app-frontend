@@ -12,8 +12,8 @@
 	}
 
 	&__textarea {
-		background-color: $c-wht;
-		color: $c-blc;
+		background-color: $c-tri;
+		color: $c-tri-txt;
 		flex-grow: 1;
 		min-width: 0;
 		resize: none;
@@ -41,6 +41,6 @@
 		height: 2rem;
 		width: 2rem;
 		flex-shrink: 0;
-		color: $c-wht;
+		color: $c-sec-txt;
 	}
 }

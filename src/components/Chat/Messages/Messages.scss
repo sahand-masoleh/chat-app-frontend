@@ -30,13 +30,13 @@
 	&__content {
 		padding: 1ch;
 		border-radius: 1ch;
-		box-shadow: 0 1ch 1ch $c-blc-t;
+		box-shadow: $drop-shadow;
 		overflow-wrap: break-word;
 
 		&--out {
 			padding: 1ch;
 			background-color: $c-prm;
-			color: $c-wht;
+			color: $c-prm-txt;
 
 			&.text-message__content--neu {
 				border-top-right-radius: 0;
@@ -44,8 +44,8 @@
 		}
 
 		&--in {
-			background-color: $c-wht;
-			color: $c-blc;
+			background-color: $c-tri;
+			color: $c-tri-txt;
 
 			&.text-message__content--neu {
 				border-top-left-radius: 0;
@@ -56,7 +56,7 @@
 
 .file-message {
 	border-radius: 1ch;
-	box-shadow: 0 1ch 1ch $c-blc-t;
+	box-shadow: $drop-shadow;
 	width: fit-content;
 	display: flex;
 	max-width: 100%;
@@ -64,14 +64,14 @@
 	overflow: hidden;
 
 	&--in {
-		background-color: $c-wht;
-		color: $c-blc;
+		background-color: $c-tri;
+		color: $c-tri-txt;
 		align-self: flex-start;
 	}
 
 	&--out {
 		background-color: $c-prm;
-		color: $c-wht;
+		color: $c-prm-txt;
 		align-self: flex-end;
 		flex-direction: row-reverse;
 	}
@@ -116,7 +116,7 @@
 
 	&__button {
 		height: 2rem;
-		color: $c-wht;
+		color: $c-sec-txt;
 		width: 2rem;
 	}
 
@@ -126,7 +126,7 @@
 		place-items: center;
 		font-size: medium;
 		font-weight: 400;
-		color: $c-wht;
+		color: $c-tri-txt;
 
 		&::after {
 			content: "";
@@ -136,7 +136,7 @@
 			transition: max-height 0.1s;
 			width: 100%;
 			top: 0;
-			background-color: $c-wht;
+			background-color: $c-prm-txt;
 			opacity: 0.5;
 		}
 	}
@@ -146,6 +146,7 @@
 	align-self: flex-start;
 	font-size: large;
 	font-weight: 700;
+	color: $c-tri-txt;
 	border-radius: 0.5rem;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;

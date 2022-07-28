@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { ConnectionProvider } from "./contexts/ConnectionContext";
 import { StatusProvider } from "./contexts/StatusContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 class ErrorBoundary extends Component {
 	constructor(props) {
@@ -24,12 +25,14 @@ class ErrorBoundary extends Component {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<StatusProvider>
-			<ConnectionProvider>
-				<ErrorBoundary>
-					<App />
-				</ErrorBoundary>
-			</ConnectionProvider>
-		</StatusProvider>
+		<ErrorBoundary>
+			<ThemeProvider>
+				<StatusProvider>
+					<ConnectionProvider>
+						<App />
+					</ConnectionProvider>
+				</StatusProvider>
+			</ThemeProvider>
+		</ErrorBoundary>
 	</React.StrictMode>
 );

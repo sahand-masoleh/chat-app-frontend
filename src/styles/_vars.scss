@@ -1,11 +1,18 @@
-$c-prm: #f2542d;
-$c-prm-d: #562c2c;
-$c-sec: #0e9594;
-$c-sec-d: #127475;
-$c-neut: #f5dfbb;
-$c-blc: #151f30;
-$c-blc-t: #151f3020;
-$c-wht: #f9f9f9;
+$c-prm: var(--c-prm);
+$c-prm-txt: var(--c-prm-txt);
+$c-prm-trn: #f2542d50;
+
+$c-neut: var(--c-neut);
+
+$c-sec: var(--c-sec);
+$c-sec-txt: var(--c-sec-txt);
+
+$c-tri: var(--c-tri);
+$c-tri-txt: var(--c-tri-txt);
+
+$c-trn: var(--c-trn);
+
 $c-red: red;
 $c-grn: green;
-$drop-shadow: 0 0.5rem 0.5rem $c-blc-t;
+
+$drop-shadow: 0 0.5rem 0.5rem $c-trn;

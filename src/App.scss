@@ -21,15 +21,17 @@
 	font-family: "Signika Negative";
 }
 
-#root {
-	background-color: $c-neut;
+html,
+body,
+#root,
+.theme-wrapper {
+	height: 100%;
+}
+
+.app {
 	min-height: 100%;
+	background-color: $c-neut;
 	display: grid;
 	place-items: center;
 	grid-auto-columns: minmax(0, 1fr);
-}
-
-html,
-body {
-	height: 100%;
 }

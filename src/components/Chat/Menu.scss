@@ -1,0 +1,46 @@
+@use "@/styles/vars" as *;
+
+.menu {
+	position: absolute;
+	left: 0;
+	padding: 1ch;
+	background-color: $c-tri;
+	color: $c-tri-txt;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	box-shadow: $drop-shadow;
+	margin: 1ch;
+	z-index: 100;
+
+	&__item {
+		all: unset;
+		text-decoration: none;
+		font-size: x-large;
+		font-weight: 300;
+		cursor: pointer;
+	}
+
+	&__divider {
+		width: 100%;
+		border: none;
+		border-top: 1px solid $c-trn;
+		margin: 2ch 0;
+	}
+
+	&__name {
+		font-size: x-large;
+		font-weight: 300;
+	}
+
+	&__theme {
+		display: flex;
+		gap: 1ch;
+	}
+
+	&__button {
+		height: 2rem;
+		aspect-ratio: 1;
+	}
+}

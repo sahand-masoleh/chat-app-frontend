@@ -1,5 +1,4 @@
 @use "@/styles/vars" as *;
-@use "sass:color";
 
 .wizard {
 	display: grid;
@@ -14,13 +13,13 @@
 	hyphens: auto;
 	font-size: xx-large;
 	font-weight: 300;
-	padding: 1ch 2ch;
+	padding: 1ch 1ch;
 
 	background-color: $c-prm;
-	color: $c-wht;
+	color: $c-prm-txt;
 	border: none;
 	border-radius: 1rem;
-	outline: 0.25rem solid color.adjust($c-prm, $alpha: -0.75);
+	outline: 0.25rem solid $c-prm-trn;
 
 	cursor: pointer;
 
@@ -41,7 +40,7 @@
 	&__title {
 		font-size: xx-large;
 		font-weight: 300;
-		color: $c-blc;
+		color: $c-tri-txt;
 		text-align: center;
 	}
 
@@ -51,11 +50,11 @@
 		min-width: 0;
 		font-size: xx-large;
 		font-weight: 700;
-		color: $c-blc;
 		border: none;
 		border-radius: 0.5rem;
 		outline: 0.25rem solid currentColor;
-		background-color: $c-wht;
+		background-color: $c-tri;
+		color: $c-tri-txt;
 	}
 
 	&__button {

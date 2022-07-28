@@ -2,8 +2,9 @@
 
 .top {
 	background-color: $c-sec;
-	color: $c-wht;
+	color: $c-sec-txt;
 	position: relative;
+	user-select: none;
 
 	&__wrapper {
 		height: 3rem;
@@ -24,56 +25,5 @@
 		height: 2rem;
 		aspect-ratio: 1;
 		margin-left: 1ch;
-	}
-}
-
-.menu {
-	position: absolute;
-	left: 0;
-	padding: 1ch;
-	background-color: $c-wht;
-	color: $c-blc;
-	border-radius: 0.5rem;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	box-shadow: $drop-shadow;
-	margin: 1ch;
-	z-index: 100;
-
-	&__title {
-		color: $c-sec;
-	}
-
-	&__item {
-		all: unset;
-		text-decoration: none;
-		font-size: x-large;
-		font-weight: 300;
-		color: $c-sec-d;
-		cursor: pointer;
-	}
-
-	&__divider {
-		width: 100%;
-		border: none;
-		border-top: 1px solid $c-blc-t;
-		margin: 2ch 0;
-	}
-
-	&__name {
-		font-size: x-large;
-		font-weight: 300;
-	}
-
-	&__theme {
-		display: flex;
-		gap: 1ch;
-	}
-
-	&__button {
-		height: 2rem;
-		aspect-ratio: 1;
-		color: $c-sec-d;
 	}
 }
